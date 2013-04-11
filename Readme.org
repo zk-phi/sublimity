@@ -1,0 +1,67 @@
+* sublimity.el
+
+sublime text風のぬるぬるスクロール＆ミニマップ
+
+smooth-scrolling and minimap, like sublime editor
+
+** Installation
+
+To enable smooth-scrolling,
+
+: (require 'sublimity-scroll)
+
+and to enable minimap,
+
+: (require 'sublimity-map)
+
+When you load this script, "auto-hscroll-mode" is automatically
+disabled, and "sublimity-auto-hscroll-mode" will work
+instead. Therefore, to disable horizontal scrolling, set
+"sublimity-auto-hscroll-mode" nil (not "auto-hscroll-mode").
+
+: (setq nurumacs-auto-hscroll nil)
+
+** sublimity-scroll Settings
+
+You may change speed of scrolling.
+
+: (setq sublimity-scroll-vdecc 1.7)
+: (setq sublimity-scroll-vspeeds '(1000 300 100 50 7 3))
+
+: (setq sublimity-scroll-hdecc 1.5)
+: (setq sublimity-scroll-hspeeds '(400 200 10))
+
+"-speeds" is a list of speed (in descending order). "-decc" defines
+how fastly the speed goes down.
+
+** sublimity-map Settings
+
+*** sublimity-map-size, sublimity-map-fraction
+
+: (setq sublimity-map-size 20)
+: (setq sublimity-map-fraction 0.3)
+
+"sublimity-map-fraction" defines the maximum fraction of width that
+minimap can get.
+
+*** sublimity-map-setup-hook
+
+: (add-hook 'sublimity-map-setup-hook
+:           (lambda ()
+:             (setq buffer-face-mode-face '(:family "Monospace"))
+:             (buffer-face-mode)))
+
+"sublimity-map-setup-hook" will run when minimap is created.
+
+*** sublimity-map-on-scroll
+
+: (setq sublimity-map-on-scroll t)
+
+When non-nil, minimap is automatically displayed on every scrolling.
+
+*** sublimity-map-set-delay
+
+: (sublimity-map-set-delay 5)
+
+With settings above, minimap is displayed after 5 seconds of idle
+time.
