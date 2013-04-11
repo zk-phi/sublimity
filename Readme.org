@@ -19,7 +19,7 @@ disabled, and "sublimity-auto-hscroll-mode" will work
 instead. Therefore, to disable horizontal scrolling, set
 "sublimity-auto-hscroll-mode" nil (not "auto-hscroll-mode").
 
-: (setq nurumacs-auto-hscroll nil)
+: (setq sublimity-auto-hscroll nil)
 
 ** sublimity-scroll Settings
 
