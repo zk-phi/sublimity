@@ -31,21 +31,21 @@
 
 ;; * customs
 
-;; vscroll
+(defcustom sublimity-scroll-vdecc 1.7
+  "how vertical scroll speed goes down"
+  :group 'sublimity)
 
-(defvar sublimity-scroll-vdecc 1.7
-  "how vertical scroll speed goes down")
+(defcustom sublimity-scroll-vspeeds '(1000 300 100 50 7 3)
+  "speeds of vertical scrolling animation"
+  :group 'sublimity)
 
-(defvar sublimity-scroll-vspeeds '(1000 300 100 50 7 3)
-  "speeds of vertical scrolling animation")
+(defcustom sublimity-scroll-hdecc 1.5
+  "how horizontal scroll speed goes down"
+  :group 'sublimity)
 
-;; hscroll
-
-(defvar sublimity-scroll-hdecc 1.5
-  "how horizontal scroll speed goes down")
-
-(defvar sublimity-scroll-hspeeds '(400 200 10)
-  "speeds of horizontal scrolling animation")
+(defcustom sublimity-scroll-hspeeds '(400 200 10)
+  "speeds of horizontal scrolling animation"
+  :group 'sublimity)
 
 ;; * utils
 

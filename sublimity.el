@@ -40,6 +40,12 @@
 
 (defconst sublimity-version "1.0.0")
 
+;; * customs
+
+(defgroup sublimity nil
+  "smooth-scrolling and minimap, like sublime editor"
+  :group 'emacs)
+
 ;; * children
 
 (defvar sublimity-scroll nil)

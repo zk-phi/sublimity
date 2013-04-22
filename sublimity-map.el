@@ -31,18 +31,23 @@
 
 ;; * customs
 
-(defvar sublimity-map-size 20
-  "width of minimap")
+(defcustom sublimity-map-size 20
+  "width of minimap"
+  :group 'sublimity)
 
-(defvar sublimity-map-fraction 0.3
-  "maximum fraction of minimap width")
+(defcustom sublimity-map-fraction 0.3
+  "maximum fraction of minimap width"
+  :group 'sublimity)
+
+(defcustom sublimity-map-on-scroll t
+  "if minimap should be automatically displayed on scroll"
+  :group 'sublimity)
+
+;; * vars
 
 (defvar sublimity-map-setup-hook '((lambda () (text-scale-set -7)))
   "hooks that are called just after minimap is activated
 you may assume (selected-window) and (current-buffer) are minimap")
-
-(defvar sublimity-map-on-scroll t
-  "if non-nil, minimap is displayd on every scrolling")
 
 ;; * map
 
