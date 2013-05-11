@@ -6,20 +6,24 @@ smooth-scrolling and minimap, like sublime editor
 
 ** Installation
 
-To enable smooth-scrolling,
+Require this script.
 
-: (require 'sublimity-scroll)
+: (require 'sublimity)
 
-and to enable minimap,
+Now "M-x sublimity-scroll" will load smooth-scrolling, and "M-x
+sublimity-map" will load minimap. If you want emacs always load them,
+put code like
 
-: (require 'sublimity-map)
+: (when (require 'sublimity nil t)
+:   (sublimity-scroll)
+:   (sublimity-map)))
+
+into your init file.
 
 When you load this script, "auto-hscroll-mode" is automatically
 disabled, and "sublimity-auto-hscroll-mode" will work
 instead. Therefore, to disable horizontal scrolling, set
-"sublimity-auto-hscroll-mode" nil (not "auto-hscroll-mode").
-
-: (setq sublimity-auto-hscroll nil)
+"sublimity-auto-hscroll-mode" but not "auto-hscroll-mode".
 
 ** sublimity-scroll Settings
 

@@ -23,6 +23,7 @@
 ;;; Change Log:
 
 ;; 1.0.0 first released
+;; 1.0.1 modified the default value of speeds
 
 ;;; Code:
 
@@ -35,7 +36,7 @@
   "how vertical scroll speed goes down"
   :group 'sublimity)
 
-(defcustom sublimity-scroll-vspeeds '(1000 300 100 50 7 3)
+(defcustom sublimity-scroll-vspeeds '(10000 3000 1000 300 100 50 7 3)
   "speeds of vertical scrolling animation"
   :group 'sublimity)
 
@@ -43,7 +44,7 @@
   "how horizontal scroll speed goes down"
   :group 'sublimity)
 
-(defcustom sublimity-scroll-hspeeds '(400 200 10)
+(defcustom sublimity-scroll-hspeeds '(3000 1000 400 200 10)
   "speeds of horizontal scrolling animation"
   :group 'sublimity)
 

@@ -23,6 +23,7 @@
 ;;; Change Log:
 
 ;; 1.0.0 first released
+;; 1.0.1 fixed minibuffer bug
 
 ;;; Code:
 
@@ -109,7 +110,8 @@ you may assume (selected-window) and (current-buffer) are minimap")
     (sublimity-map--update)))
 
 (defun sublimity-map--idle ()
-  (sublimity-map--update))
+  (unless (window-minibuffer-p)
+   (sublimity-map--update)))
 
 (add-hook 'sublimity--post-vscroll-functions 'sublimity-map--post-vscroll)
 (add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command)

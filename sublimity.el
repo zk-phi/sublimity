@@ -22,13 +22,19 @@
 
 ;;; Commentary:
 
-;; To enable smooth-scrolling, require "sublimity-scroll".
+;; Require this script.
 ;;
-;;   (require 'sublimity-scroll)
+;; (require 'sublimity)
 ;;
-;; Or, to enable minimap, require "sublimity-map".
+;; Now "M-x sublimity-scroll" will load smooth-scrolling, and "M-x
+;; sublimity-map" will load minimap. If you want emacs always load them,
+;; put code like
 ;;
-;;   (require 'sublimity-map)
+;; (when (require 'sublimity nil t)
+;;   (sublimity-scroll)
+;;   (sublimity-map)))
+;;
+;; into your init file.
 
 ;; For more informations, see "Readme".
 
@@ -51,10 +57,12 @@
 (defvar sublimity-scroll nil)
 (defvar sublimity-map nil)
 
+;;;###autoload
 (defun sublimity-scroll ()
   (interactive)
   (setq sublimity-scroll (require 'sublimity-scroll nil t)))
 
+;;;###autoload
 (defun sublimity-map ()
   (interactive)
   (setq sublimity-map (require 'sublimity-map nil t)))
