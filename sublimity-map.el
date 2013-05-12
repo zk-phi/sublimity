@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.0
+;; Version: 1.0.1
 
 ;;; Change Log:
 
@@ -28,7 +28,7 @@
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-map-version "1.0.0")
+(defconst sublimity-map-version "1.0.1")
 
 ;; * customs
 
@@ -71,28 +71,31 @@ you may assume (selected-window) and (current-buffer) are minimap")
     nil))
 
 (defun sublimity-map--update ()
-  (unless (sublimity-map--live-p)
-    (when (setq sublimity-map--window
-                (when (<= (/ sublimity-map-size (window-width) 1.0)
-                          sublimity-map-fraction)
-                  (split-window (selected-window)
-                                (- (window-width) sublimity-map-size) t)))
-      (let ((str (buffer-string)))
+  (unless (window-minibuffer-p)
+    ;; make window
+    (unless (sublimity-map--live-p)
+      (when (setq sublimity-map--window
+                  (when (<= (/ sublimity-map-size (window-width) 1.0)
+                            sublimity-map-fraction)
+                    (split-window (selected-window)
+                                  (- (window-width) sublimity-map-size) t)))
+        (let ((str (buffer-string)))
+          (with-selected-window sublimity-map--window
+            (switch-to-buffer
+             (setq sublimity-map--buffer (generate-new-buffer "*nurumap*")))
+            (insert str)
+            (run-hooks 'sublimity-map-setup-hook)))))
+    ;; update
+    (when (sublimity-map--live-p)
+      (let ((point (point))
+            (beg (window-start))
+            (end (window-end nil t)))
         (with-selected-window sublimity-map--window
-          (switch-to-buffer
-           (setq sublimity-map--buffer (generate-new-buffer "*nurumap*")))
-          (insert str)
-          (run-hooks 'sublimity-map-setup-hook)))))
-  (when (sublimity-map--live-p)
-    (let ((point (point))
-          (beg (window-start))
-          (end (window-end nil t)))
-      (with-selected-window sublimity-map--window
-       (when sublimity-map--overlay
-         (delete-overlay sublimity-map--overlay))
-       (overlay-put (make-overlay beg end) 'face 'highlight)
-       (goto-char point)
-       (recenter)))))
+          (when sublimity-map--overlay
+            (delete-overlay sublimity-map--overlay))
+          (overlay-put (make-overlay beg end) 'face 'highlight)
+          (goto-char point)
+          (recenter))))))
 
 ;; * trigger
 
@@ -110,8 +113,7 @@ you may assume (selected-window) and (current-buffer) are minimap")
     (sublimity-map--update)))
 
 (defun sublimity-map--idle ()
-  (unless (window-minibuffer-p)
-   (sublimity-map--update)))
+  (sublimity-map--update))
 
 (add-hook 'sublimity--post-vscroll-functions 'sublimity-map--post-vscroll)
 (add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command)

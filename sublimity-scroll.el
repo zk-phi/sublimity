@@ -18,42 +18,37 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.0
+;; Version: 1.1.0
 
 ;;; Change Log:
 
 ;; 1.0.0 first released
 ;; 1.0.1 modified the default value of speeds
+;; 1.1.0 changed algorithm for smooth-scrolling
 
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-scroll-version "1.0.0")
+(defconst sublimity-scroll-version "1.1.0")
 
 ;; * customs
 
-(defcustom sublimity-scroll-vdecc 1.7
-  "how vertical scroll speed goes down"
+(defcustom sublimity-scroll-weight1 10
+  "this defines the granularity of scroll speeds.
+basically, if this is set larger, scroll ends more smoothly."
   :group 'sublimity)
 
-(defcustom sublimity-scroll-vspeeds '(10000 3000 1000 300 100 50 7 3)
-  "speeds of vertical scrolling animation"
-  :group 'sublimity)
-
-(defcustom sublimity-scroll-hdecc 1.5
-  "how horizontal scroll speed goes down"
-  :group 'sublimity)
-
-(defcustom sublimity-scroll-hspeeds '(3000 1000 400 200 10)
-  "speeds of horizontal scrolling animation"
+(defcustom sublimity-scroll-weight2 1.7
+  "this defines how the scroll speed goes down.
+basically, if this is set larger, long scroll become slower."
   :group 'sublimity)
 
 ;; * utils
 
-(defun sublimity-scroll--vscroll (lines)
+(defun sublimity-scroll--vscroll (lins)
   "FOR ANIMATION USE ONLY"
   (goto-char (window-start))
-  (forward-line lines)
+  (forward-line lins)
   (set-window-start nil (point)))
 
 (defun sublimity-scroll--hscroll (cols)
@@ -63,42 +58,41 @@
 
 ;; * animation
 
-(defun sublimity-scroll--animate (amount fun speeds decc)
-  (save-window-excursion
-    (save-excursion
-      (let* ((fun (if (>= amount 0) fun
-                    `(lambda (amount) (,fun (- amount)))))
-             (abs (abs amount))
-             (cursor-type nil))
-        (funcall fun (- abs))
-        (dolist (spd speeds)
-          (while (>= abs (floor (* decc spd)))
-            (funcall fun spd)
-            (setq abs (- abs spd))
-            (redisplay t)))
-        (dotimes (tmp abs)
-          (funcall fun 1)
-          (redisplay t))))))
+(defun sublimity-scroll--gen-speeds (amount)
+  (let ((weight sublimity-scroll-weight2)
+        (base sublimity-scroll-weight1))
+    (cond ((< amount 0)
+           (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
+          ((zerop amount)
+           '())
+          (t
+           (let* ((tmp (floor (log (max (/ amount weight) 1) base)))
+                  (spd (expt base tmp)))
+             (cons spd (sublimity-scroll--gen-speeds (- amount spd))))))))
 
 (defun sublimity-scroll--vscroll-effect (lins)
-  (sublimity-scroll--animate lins
-                             'sublimity-scroll--vscroll
-                             sublimity-scroll-vspeeds
-                             sublimity-scroll-vdecc))
+  (save-excursion
+    (let ((speeds (sublimity-scroll--gen-speeds lins)))
+      (sublimity-scroll--vscroll (- lins))
+      (dolist (speed speeds)
+        (sublimity-scroll--vscroll speed)
+        (redisplay t)))))
 
-(defun sublimity-scroll--hscroll-effect (lins)
-  (sublimity-scroll--animate lins
-                             'sublimity-scroll--hscroll
-                             sublimity-scroll-hspeeds
-                             sublimity-scroll-hdecc))
+(defun sublimity-scroll--hscroll-effect (cols)
+  (save-excursion
+    (let ((speeds (sublimity-scroll--gen-speeds cols)))
+      (sublimity-scroll--hscroll (- cols))
+      (dolist (speed speeds)
+        (sublimity-scroll--hscroll speed)
+        (redisplay t)))))
 
 ;; * triggers
 
-(defun sublimity-scroll--post-vscroll (lines)
-  (sublimity-scroll--vscroll-effect lines))
+(defun sublimity-scroll--post-vscroll (lins)
+  (sublimity-scroll--vscroll-effect lins))
 
-(defun sublimity-scroll--post-hscroll (lines)
-  (sublimity-scroll--hscroll-effect lines))
+(defun sublimity-scroll--post-hscroll (cols)
+  (sublimity-scroll--hscroll-effect cols))
 
 (add-hook 'sublimity--post-vscroll-functions
           'sublimity-scroll--post-vscroll)
