@@ -4,7 +4,7 @@ sublime text風のぬるぬるスクロール＆ミニマップ
 
 smooth-scrolling and minimap, like sublime editor
 
-** THE VERSION 1.0.1 OF "sublimity-scroll.el" BROKE BACKWARD COMPATIBILITY
+** THE VERSION 1.1.0 OF "sublimity-scroll.el" BROKE BACKWARD COMPATIBILITY
 
 Now variables "sublimity-scroll--xspeeds" and
 "sublimity-scroll--xdecc" are not useful. Use
