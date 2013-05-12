@@ -68,7 +68,8 @@ basically, if this is set larger, long scroll become slower."
           (t
            (let* ((tmp (floor (log (max (/ amount weight) 1) base)))
                   (spd (expt base tmp)))
-             (cons spd (sublimity-scroll--gen-speeds (- amount spd))))))))
+             (append (make-list (/ amount spd) spd)
+                     (sublimity-scroll--gen-speeds (% amount spd))))))))
 
 (defun sublimity-scroll--vscroll-effect (lins)
   (save-excursion
