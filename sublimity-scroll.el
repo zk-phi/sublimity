@@ -59,17 +59,20 @@ basically, if this is set larger, long scroll become slower."
 ;; * animation
 
 (defun sublimity-scroll--gen-speeds (amount)
-  (let ((weight sublimity-scroll-weight2)
+  (let ((amount2 (/ amount sublimity-scroll-weight2))
         (base sublimity-scroll-weight1))
     (cond ((< amount 0)
            (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
           ((zerop amount)
            '())
+          ((< amount2 base)
+           (make-list amount '1))
           (t
-           (let* ((tmp (floor (log (max (/ amount weight) 1) base)))
-                  (spd (expt base tmp)))
-             (append (make-list (/ amount spd) spd)
-                     (sublimity-scroll--gen-speeds (% amount spd))))))))
+           (let* ((spd (expt base (floor (log amount2 base))))
+                  (times (floor (/ amount2 spd)))
+                  (rest (- amount (* times spd))))
+             (append (make-list times spd)
+                     (sublimity-scroll--gen-speeds rest)))))))
 
 (defun sublimity-scroll--vscroll-effect (lins)
   (save-excursion
