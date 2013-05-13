@@ -18,17 +18,18 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.1
+;; Version: 1.0.2
 
 ;;; Change Log:
 
 ;; 1.0.0 first released
 ;; 1.0.1 fixed minibuffer bug
+;; 1.0.2 consider window-margins
 
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-map-version "1.0.1")
+(defconst sublimity-map-version "1.0.2")
 
 ;; * customs
 
