@@ -71,31 +71,33 @@ you may assume (selected-window) and (current-buffer) are minimap")
     nil))
 
 (defun sublimity-map--update ()
-  (unless (window-minibuffer-p)
-    ;; make window
-    (unless (sublimity-map--live-p)
-      (when (setq sublimity-map--window
-                  (when (<= (/ sublimity-map-size (window-width) 1.0)
-                            sublimity-map-fraction)
-                    (split-window (selected-window)
-                                  (- (window-width) sublimity-map-size) t)))
-        (let ((str (buffer-string)))
+  (let* ((margins (window-margins))
+         (width (+ (window-width) (or (car margins) 0) (or (cdr margins) 0))))
+    (unless (window-minibuffer-p)
+      ;; make window
+      (unless (sublimity-map--live-p)
+        (when (setq sublimity-map--window
+                    (when (<= (/ sublimity-map-size width 1.0)
+                              sublimity-map-fraction)
+                      (split-window (selected-window)
+                                    (- width sublimity-map-size) t)))
+          (let ((str (buffer-string)))
+            (with-selected-window sublimity-map--window
+              (switch-to-buffer
+               (setq sublimity-map--buffer (generate-new-buffer "*nurumap*")))
+              (insert str)
+              (run-hooks 'sublimity-map-setup-hook)))))
+      ;; update
+      (when (sublimity-map--live-p)
+        (let ((point (point))
+              (beg (window-start))
+              (end (window-end nil t)))
           (with-selected-window sublimity-map--window
-            (switch-to-buffer
-             (setq sublimity-map--buffer (generate-new-buffer "*nurumap*")))
-            (insert str)
-            (run-hooks 'sublimity-map-setup-hook)))))
-    ;; update
-    (when (sublimity-map--live-p)
-      (let ((point (point))
-            (beg (window-start))
-            (end (window-end nil t)))
-        (with-selected-window sublimity-map--window
-          (when sublimity-map--overlay
-            (delete-overlay sublimity-map--overlay))
-          (overlay-put (make-overlay beg end) 'face 'highlight)
-          (goto-char point)
-          (recenter))))))
+            (when sublimity-map--overlay
+              (delete-overlay sublimity-map--overlay))
+            (overlay-put (make-overlay beg end) 'face 'highlight)
+            (goto-char point)
+            (recenter)))))))
 
 ;; * trigger
 
