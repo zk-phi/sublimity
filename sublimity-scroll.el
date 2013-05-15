@@ -35,12 +35,12 @@
 
 (defcustom sublimity-scroll-weight1 10
   "this defines the granularity of scroll speeds.
-basically, if this is set larger, scroll ends more smoothly."
+basically, if this is set greater, scroll ends more slowly."
   :group 'sublimity)
 
 (defcustom sublimity-scroll-weight2 1.7
   "this defines how the scroll speed goes down.
-basically, if this is set larger, long scroll become slower."
+basically, if this is set greater, long scroll become slower."
   :group 'sublimity)
 
 ;; * utils
