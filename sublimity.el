@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.1
+;; Version: 1.1.0
 
 ;;; Commentary:
 
@@ -40,11 +40,11 @@
 ;;; Change Log:
 
 ;; 1.0.0 first released
-;; 1.0.1 turned into minor-mode
+;; 1.1.0 turned into minor-mode
 
 ;;; Code:
 
-(defconst sublimity-version "1.0.1")
+(defconst sublimity-version "1.1.0")
 
 ;; * customs
 
