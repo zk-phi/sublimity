@@ -22,19 +22,18 @@
 
 ;;; Commentary:
 
-;; Require this script.
+;; Require this script and some of "sublimity-scroll" "sublimity-map".
 ;;
-;; (require 'sublimity)
+;;   (require 'sublimity)
+;;   (require 'sublimity-scroll)
+;;   (require 'sublimity-map)
 ;;
-;; Now "M-x sublimity-scroll" will load smooth-scrolling, and "M-x
-;; sublimity-map" will load minimap. If you want emacs always load them,
-;; put code like
+;; then call command "M-x sublimity-mode".
+
+;; If you want to enable sublimity everywhere, call function
+;; sublimity-global-mode.
 ;;
-;; (when (require 'sublimity nil t)
-;;   (sublimity-scroll)
-;;   (sublimity-map)))
-;;
-;; into your init file.
+;;   (sublimity-global-mode)
 
 ;; For more informations, see "Readme".
 
@@ -52,25 +51,40 @@
   "smooth-scrolling and minimap, like sublime editor"
   :group 'emacs)
 
-;; * children
+;; * minor mode
 
-(defvar sublimity-scroll nil)
-(defvar sublimity-map nil)
+(define-minor-mode sublimity-mode
+  "smooth-scrolling and minimap, like sublime editor"
+  :init-value nil
+  :global nil
+  (if sublimity-mode
+      (progn (add-hook 'pre-command-hook 'sublimity--pre-command t t)
+             (add-hook 'post-command-hook 'sublimity--post-command t t)
+             (setq auto-hscroll-mode sublimity-auto-hscroll-mode))
+    (remove-hook 'pre-command-hook 'sublimity--pre-command t)
+    (remove-hook 'post-command-hook 'sublimity--post-command t)
+    (setq sublimity-auto-hscroll-mode auto-hscroll-mode
+          auto-hscroll-mode nil)))
+
+(define-globalized-minor-mode sublimity-global-mode
+  sublimity-mode
+  (lambda () (sublimity-mode 1)))
+
+;; * children
 
 ;;;###autoload
 (defun sublimity-scroll ()
   (interactive)
-  (setq sublimity-scroll (require 'sublimity-scroll nil t)))
+  (require 'sublimity-scroll nil t))
 
 ;;;###autoload
 (defun sublimity-map ()
   (interactive)
-  (setq sublimity-map (require 'sublimity-map nil t)))
+  (require 'sublimity-map nil t))
 
 ;; * sublimity common vars, functions
 
-(defvar sublimity-auto-hscroll-mode auto-hscroll-mode)
-(setq auto-hscroll-mode nil)
+(defvar sublimity-auto-hscroll-mode nil)
 
 (defvar sublimity--pre-command-functions nil
   "pre-command functions")
@@ -132,9 +146,6 @@
           (run-hook-with-args 'sublimity--post-vscroll-functions lins))
         (when (not (zerop cols))
           (run-hook-with-args 'sublimity--post-hscroll-functions cols))))))
-
-(add-to-list 'pre-command-hook 'sublimity--pre-command t)
-(add-to-list 'post-command-hook 'sublimity--post-command t)
 
 ;; * provide
 

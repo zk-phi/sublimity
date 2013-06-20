@@ -12,19 +12,18 @@ Now variables "sublimity-scroll--xspeeds" and
 
 ** Installation
 
-Require this script.
+Require this script and some of "sublimity-scroll" "sublimity-map".
 
 : (require 'sublimity)
+: (require 'sublimity-scroll)
+: (require 'sublimity-map)
 
-Now "M-x sublimity-scroll" will load smooth-scrolling, and "M-x
-sublimity-map" will load minimap. If you want emacs always load them,
-put code like
+and call command "M-x sublimity-mode".
 
-: (when (require 'sublimity nil t)
-:   (sublimity-scroll)
-:   (sublimity-map)))
+If you want to enable sublimity everywhere, call function
+sublimity-global-mode.
 
-into your init file.
+: (sublimity-global-mode)
 
 When you load this script, "auto-hscroll-mode" is automatically
 disabled, and "sublimity-auto-hscroll-mode" will work
