@@ -59,13 +59,13 @@
   :init-value nil
   :global nil
   (if sublimity-mode
-      (progn (add-hook 'pre-command-hook 'sublimity--pre-command t t)
+      (progn (add-hook 'pre-command-hook 'sublimity--pre-command nil t)
              (add-hook 'post-command-hook 'sublimity--post-command t t)
-             (setq auto-hscroll-mode sublimity-auto-hscroll-mode))
+             (setq sublimity-auto-hscroll-mode auto-hscroll-mode
+                   auto-hscroll-mode nil))
     (remove-hook 'pre-command-hook 'sublimity--pre-command t)
     (remove-hook 'post-command-hook 'sublimity--post-command t)
-    (setq sublimity-auto-hscroll-mode auto-hscroll-mode
-          auto-hscroll-mode nil)))
+    (setq auto-hscroll-mode sublimity-auto-hscroll-mode)))
 
 (define-globalized-minor-mode sublimity-global-mode
   sublimity-mode
@@ -105,8 +105,8 @@
 (defvar sublimity--prev-wnd (selected-window))
 
 (defun sublimity--should-be-quiet ()
-  (or (not (eq sublimity--prev-buf (current-buffer)))
-      (not (eq sublimity--prev-wnd (selected-window)))
+  (or (not (equal sublimity--prev-buf (current-buffer)))
+      (not (equal sublimity--prev-wnd (selected-window)))
       (and (boundp 'cua--rectangle) cua--rectangle)
       (and (boundp 'multiple-cursors-mode) multiple-cursors-mode)
       (eq major-mode 'shell-mode)))
