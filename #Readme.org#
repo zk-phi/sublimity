@@ -1,0 +1,114 @@
+* sublimity.el
+
+sublime text風のぬるぬるスクロール＆ミニマップ
+
+smooth-scrolling and minimap, like sublime editor
+
+** THE VERSION 1.1.0 OF "sublimity.el" BROKE BACKWARD COMPATIBILITY
+
+sublimity turned into minor-mode. to enable sublimity, call function
+"sublimity-mode" or "sublimity-global-mode".
+
+** THE VERSION 1.1.0 OF "sublimity-scroll.el" BROKE BACKWARD COMPATIBILITY
+
+Now variables "sublimity-scroll--xspeeds" and
+"sublimity-scroll--xdecc" are not useful. Use
+"sublimity-scroll-weight1" and "sublimity-scroll-weight2" instead.
+
+** Installation
+
+Require this script and some of "sublimity-scroll" "sublimity-map".
+
+: (require 'sublimity)
+: (require 'sublimity-scroll)
+: (require 'sublimity-map)
+
+and call command "M-x sublimity-mode".
+
+If you want to enable sublimity everywhere, call function
+sublimity-global-mode.
+
+: (sublimity-global-mode)
+
+When you load this script, "auto-hscroll-mode" is automatically
+disabled, and "sublimity-auto-hscroll-mode" will work
+instead. Therefore, to disable horizontal scrolling, set
+"sublimity-auto-hscroll-mode" but not "auto-hscroll-mode".
+
+** sublimity-scroll Settings
+
+You may change speed of scrolling.
+
+: (setq sublimity-scroll-weight1 10)
+: (setq sublimity-scroll-weight2 1.7)
+
+"sublimity-scroll-weight1" defines the granularity of scroll
+speeds. basically, if set greater, scroll ends more slowly. You must
+set a positive integer for this variable.
+
+"sublimity-scorll-weight2" defines how the scorll speed goes
+down. basically, if set greater, long scroll become slower. You must
+set a positive real number not less than "1.0" for this variable.
+
+*** Examples
+
+Consider we are going to travel 3000 lines with following
+configuration
+
+: (weight1, weight2) = (10, 1.7)
+
+then 3000 lines of scroll is divided into 30 steps shown below
+
+: (1000 1000 100 100 100 100 100 100 100 100 100
+:  10 10 10 10 10 10 10 10 10 1 1 1 1 1 1 1 1 1 1)
+
+if weight2 is much greater, "3.0" for example, then scroll takes more
+steps (slower)
+
+: (1000 100 100 100 100 100 100 100 100 100 100 100
+:  100 100 100 100 100 100 100 10 10 10 10 10 10 10
+:  10 10 10 10 10 10 10 10 10 10 10 1 1 1 1 1 1 1 1
+:  1 1 1 1 1 1 1 1 1 1 1 1)
+
+In examples above, all speeds of each steps are all 10^n, because
+weight1 is "10". if weight1 is much fewer, "2" for example, then
+
+: (1024 1024 512 256 64 64 32 8 8 4 2 1 1)
+
+or if much greater, "15" for example, then
+
+: (225 225 225 225 225 225 225 225 225 225 225 225
+:  15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15
+:  15 15 15 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+
+** sublimity-map Settings
+
+*** sublimity-map-size, sublimity-map-fraction
+
+: (setq sublimity-map-size 20)
+: (setq sublimity-map-fraction 0.3)
+
+"sublimity-map-fraction" defines the maximum fraction of width that
+minimap can get.
+
+*** sublimity-map-setup-hook
+
+: (add-hook 'sublimity-map-setup-hook
+:           (lambda ()
+:             (setq buffer-face-mode-face '(:family "Monospace"))
+:             (buffer-face-mode)))
+
+"sublimity-map-setup-hook" will run when minimap is created.
+
+*** sublimity-map-on-scroll
+
+: (setq sublimity-map-on-scroll t)
+
+When non-nil, minimap is automatically displayed on every scrolling.
+
+*** sublimity-map-set-delay
+
+: (sublimity-map-set-delay 5)
+
+With settings above, minimap is displayed after 5 seconds of idle
+time.
