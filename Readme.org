@@ -4,6 +4,11 @@ sublime text風のぬるぬるスクロール＆ミニマップ
 
 smooth-scrolling and minimap, like sublime editor
 
+** THE VERSION 1.1.0 OF "sublimity.el" BROKE BACKWARD COMPATIBILITY
+
+sublimity turned into minor-mode. to enable sublimity, call function
+"sublimity-mode" or "sublimity-global-mode".
+
 ** THE VERSION 1.1.0 OF "sublimity-scroll.el" BROKE BACKWARD COMPATIBILITY
 
 Now variables "sublimity-scroll--xspeeds" and
