@@ -113,7 +113,7 @@ When non-nil, minimap is automatically displayed on every scrolling.
 
 Set this variable to a list of command names, after which minimap
 should be updated. If one of these commands are invoked, minimap is
-updated even when scroll did not occur.
+updated even when scroll does not occur.
 
 *** sublimity-map-set-delay
 
