@@ -26,6 +26,7 @@
 ;;
 ;;   (require 'sublimity)
 ;;   (require 'sublimity-scroll)
+
 ;;   (require 'sublimity-map)
 ;;
 ;; then call command "M-x sublimity-mode".
@@ -54,6 +55,8 @@
 
 ;; * minor mode
 
+(defvar sublimity-auto-hscroll-mode auto-hscroll-mode)
+
 (define-minor-mode sublimity-mode
   "smooth-scrolling and minimap, like sublime editor"
   :init-value nil
@@ -61,8 +64,7 @@
   (if sublimity-mode
       (progn (add-hook 'pre-command-hook 'sublimity--pre-command nil t)
              (add-hook 'post-command-hook 'sublimity--post-command t t)
-             (setq sublimity-auto-hscroll-mode auto-hscroll-mode
-                   auto-hscroll-mode nil))
+             (setq auto-hscroll-mode nil))
     (remove-hook 'pre-command-hook 'sublimity--pre-command t)
     (remove-hook 'post-command-hook 'sublimity--post-command t)
     (setq auto-hscroll-mode sublimity-auto-hscroll-mode)))
@@ -84,8 +86,6 @@
   (require 'sublimity-map nil t))
 
 ;; * sublimity common vars, functions
-
-(defvar sublimity-auto-hscroll-mode nil)
 
 (defvar sublimity--pre-command-functions nil
   "pre-command functions")
