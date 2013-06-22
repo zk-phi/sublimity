@@ -82,7 +82,6 @@ or if much greater, "15" for example, then
 :  15 15 15 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
 
 ** sublimity-map Settings
-
 *** sublimity-map-size, sublimity-map-fraction
 
 : (setq sublimity-map-size 20)
@@ -111,7 +110,11 @@ When non-nil, minimap is automatically displayed on every scrolling.
 : (sublimity-map-set-delay 5)
 
 With settings above, minimap is displayed after 5 seconds of idle
-time.
+time. You can also disable minimap on idle, by passing "'inf" to
+sublimity-map-delay.
+
+: (sublimity-map-set-delay 'inf)
+
 ** Known Bugs, Limitations
 
 + if sublimity-scroll does not animate scroll correctly, try to load

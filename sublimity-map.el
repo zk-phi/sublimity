@@ -18,18 +18,20 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.2
+;; Version: 1.0.3
 
 ;;; Change Log:
 
 ;; 1.0.0 first released
 ;; 1.0.1 fixed minibuffer bug
 ;; 1.0.2 consider window-margins
+;; 1.0.3 configurable font-size for the minimap
+;;       option disable minimap when idling
 
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-map-version "1.0.2")
+(defconst sublimity-map-version "1.0.3")
 
 ;; * customs
 
@@ -47,7 +49,7 @@
 
 ;; * vars
 
-(defvar sublimity-map-setup-hook '((lambda () (text-scale-set -7)))
+(defvar sublimity-map-setup-hook nil
   "hooks that are called just after minimap is activated
 you may assume (selected-window) and (current-buffer) are minimap")
 
@@ -87,6 +89,7 @@ you may assume (selected-window) and (current-buffer) are minimap")
               (switch-to-buffer
                (setq sublimity-map--buffer (generate-new-buffer "*nurumap*")))
               (insert str)
+              (text-scale-set -7)
               (run-hooks 'sublimity-map-setup-hook)))))
       ;; update
       (when (sublimity-map--live-p)
@@ -106,7 +109,16 @@ you may assume (selected-window) and (current-buffer) are minimap")
   (run-with-idle-timer 2 t 'sublimity-map--idle))
 
 (defun sublimity-map-set-delay (secs)
-  (timer-set-idle-time sublimity-map--timer secs t))
+  "set sublimity-map delay to SECs. if secs is 'inf, disable minimap when idling."
+  (cond ((not sublimity-map--timer)
+         (or (eq secs 'inf)
+             (setq sublimity-map--timer
+                   (run-with-idle-timer secs t 'sublimity-map--idle))))
+        ((eq secs 'inf)
+         (cancel-timer sublimity-map--timer)
+         (setq sublimity-map--timer nil))
+        (t
+         (timer-set-idle-time sublimity-map--timer secs t))))
 
 (defun sublimity-map--pre-command ()
   (sublimity-map--kill))
