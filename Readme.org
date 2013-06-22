@@ -105,6 +105,16 @@ minimap can get.
 
 When non-nil, minimap is automatically displayed on every scrolling.
 
+*** sublimity-map-on-commands
+
+: (setq sublimity-map-on-commands
+:       '(previous-line next-line backward-paragraph forward-paragraph
+:                       end-of-defun beginning-of-defun))
+
+Set this variable to a list of command names, after which minimap
+should be updated. If one of these commands are invoked, minimap is
+updated even when scroll did not occur.
+
 *** sublimity-map-set-delay
 
 : (sublimity-map-set-delay 5)

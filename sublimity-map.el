@@ -27,6 +27,7 @@
 ;; 1.0.2 consider window-margins
 ;; 1.0.3 configurable font-size for the minimap
 ;;       option disable minimap when idling
+;;       added sublimity-map-on-commands
 
 ;;; Code:
 
@@ -45,6 +46,12 @@
 
 (defcustom sublimity-map-on-scroll t
   "if minimap should be automatically displayed on scroll"
+  :group 'sublimity)
+
+(defcustom sublimity-map-on-commands
+  '(previous-line next-line backward-paragraph forward-paragraph
+                  end-of-defun beginning-of-defun)
+  "commands after which the minimap should be displayed"
   :group 'sublimity)
 
 ;; * vars
@@ -123,6 +130,10 @@ you may assume (selected-window) and (current-buffer) are minimap")
 (defun sublimity-map--pre-command ()
   (sublimity-map--kill))
 
+(defun sublimity-map--post-command ()
+  (when (member this-command sublimity-map-on-commands)
+    (sublimity-map--update)))
+
 (defun sublimity-map--post-vscroll (_)
   (when sublimity-map-on-scroll
     (sublimity-map--update)))
@@ -132,6 +143,7 @@ you may assume (selected-window) and (current-buffer) are minimap")
 
 (add-hook 'sublimity--post-vscroll-functions 'sublimity-map--post-vscroll)
 (add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command)
+(add-hook 'sublimity--post-command-functions 'sublimity-map--post-command)
 
 ;; * provide
 
