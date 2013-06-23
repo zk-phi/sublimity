@@ -115,7 +115,7 @@
         (scroll-right (- cols))
       (scroll-left cols))))
 
-(defun sublimity--pre-command-handler ()
+(defun sublimity--pre-command ()
   (when sublimity-mode
     (setq sublimity--prev-lin (line-number-at-pos (window-start))
           sublimity--prev-col (window-hscroll)
@@ -123,7 +123,7 @@
           sublimity--prev-wnd (selected-window))
     (run-hooks 'sublimity--pre-command-functions)))
 
-(defun sublimity--post-command-handler ()
+(defun sublimity--post-command ()
   (when (and sublimity-mode
              (not (sublimity--should-be-quiet)))
     (let (deactivate-mark)
@@ -148,8 +148,8 @@
         (when (not (zerop cols))
           (run-hook-with-args 'sublimity--post-hscroll-functions cols))))))
 
-(add-hook 'pre-command-hook 'sublimity--pre-command-handler)
-(add-hook 'post-command-hook 'sublimity--post-command-handler t)
+(add-hook 'pre-command-hook 'sublimity--pre-command)
+(add-hook 'post-command-hook 'sublimity--post-command t)
 
 ;; * provide
 
