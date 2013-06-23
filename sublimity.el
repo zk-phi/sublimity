@@ -62,11 +62,7 @@
   :init-value nil
   :global nil
   (if sublimity-mode
-      (progn (add-hook 'pre-command-hook 'sublimity--pre-command nil t)
-             (add-hook 'post-command-hook 'sublimity--post-command t t)
-             (setq auto-hscroll-mode nil))
-    (remove-hook 'pre-command-hook 'sublimity--pre-command t)
-    (remove-hook 'post-command-hook 'sublimity--post-command t)
+      (setq auto-hscroll-mode nil)
     (setq auto-hscroll-mode sublimity-auto-hscroll-mode)))
 
 (define-globalized-minor-mode sublimity-global-mode
@@ -105,28 +101,32 @@
 (defvar sublimity--prev-wnd (selected-window))
 
 (defun sublimity--should-be-quiet ()
-  (or (not (equal sublimity--prev-buf (current-buffer)))
-      (not (equal sublimity--prev-wnd (selected-window)))
+  (or (not (eq sublimity--prev-buf (current-buffer)))
+      (not (eq sublimity--prev-wnd (selected-window)))
       (and (boundp 'cua--rectangle) cua--rectangle)
       (and (boundp 'multiple-cursors-mode) multiple-cursors-mode)
       (eq major-mode 'shell-mode)))
 
 (defun sublimity--horizontal-recenter ()
-  (let ((cols (- (current-column) (window-hscroll) (/ (window-width) 2))))
+  (let ((cols (- (current-column)
+                 (window-hscroll)
+                 (/ (window-width) 2))))
     (if (< cols 0)
         (scroll-right (- cols))
       (scroll-left cols))))
 
-(defun sublimity--pre-command ()
-  (setq sublimity--prev-lin (line-number-at-pos (window-start))
-        sublimity--prev-col (window-hscroll)
-        sublimity--prev-buf (current-buffer)
-        sublimity--prev-wnd (selected-window))
-  (run-hooks 'sublimity--pre-command-functions))
+(defun sublimity--pre-command-handler ()
+  (when sublimity-mode
+    (setq sublimity--prev-lin (line-number-at-pos (window-start))
+          sublimity--prev-col (window-hscroll)
+          sublimity--prev-buf (current-buffer)
+          sublimity--prev-wnd (selected-window))
+    (run-hooks 'sublimity--pre-command-functions)))
 
-(defun sublimity--post-command ()
-  (let (deactivate-mark)
-    (unless (sublimity--should-be-quiet)
+(defun sublimity--post-command-handler ()
+  (when (and sublimity-mode
+             (not (sublimity--should-be-quiet)))
+    (let (deactivate-mark)
       ;; do vscroll
       (when (or (< (point) (window-start))
                 (>= (point) (window-end)))
@@ -147,6 +147,9 @@
           (run-hook-with-args 'sublimity--post-vscroll-functions lins))
         (when (not (zerop cols))
           (run-hook-with-args 'sublimity--post-hscroll-functions cols))))))
+
+(add-hook 'pre-command-hook 'sublimity--pre-command-handler)
+(add-hook 'post-command-hook 'sublimity--post-command-handler t)
 
 ;; * provide
 
