@@ -16,9 +16,9 @@
 ;; along with this program; if not, write to the Free Software
 ;; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-;; Author: zk_phi
-;; URL: http://hins11.yu-yake.com/
-;; Version: 1.1.0
+;; Authors: zk_phi, prvteprts
+;; URL: http://hins11.yu-yake.com/, https://github.com/prvteprts
+;; Version: 1.1.1
 
 ;;; Commentary:
 
@@ -42,6 +42,7 @@
 
 ;; 1.0.0 first released
 ;; 1.1.0 turned into minor-mode
+;; 1.1.1 disabled idling when sublimity-mode is disabled
 
 ;;; Code:
 
@@ -62,8 +63,12 @@
   :init-value nil
   :global nil
   (if sublimity-mode
-      (setq auto-hscroll-mode nil)
-    (setq auto-hscroll-mode sublimity-auto-hscroll-mode)))
+      (progn 
+	(setq auto-hscroll-mode nil)
+	(sublimity-map-set-delay 2))
+    (progn
+      (setq auto-hscroll-mode sublimity-auto-hscroll-mode)
+      (sublimity-map-set-delay 'inf))))
 
 (define-globalized-minor-mode sublimity-global-mode
   sublimity-mode
