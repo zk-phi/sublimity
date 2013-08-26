@@ -69,7 +69,7 @@
   sublimity-mode
   (lambda () (sublimity-mode 1)))
 
-;; * children
+;; * commands (for backward compatibility)
 
 ;;;###autoload
 (defun sublimity-scroll ()

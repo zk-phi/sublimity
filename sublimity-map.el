@@ -139,7 +139,8 @@ you may assume (selected-window) and (current-buffer) are minimap")
     (sublimity-map--update)))
 
 (defun sublimity-map--idle ()
-  (sublimity-map--update))
+  (when sublimity-mode
+    (sublimity-map--update)))
 
 (add-hook 'sublimity--post-vscroll-functions 'sublimity-map--post-vscroll)
 (add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command)
