@@ -28,11 +28,12 @@
 ;; 1.0.3 configurable font-size for the minimap
 ;;       option disable minimap when idling
 ;;       added sublimity-map-on-commands
+;; 1.0.4 disable idle-timer while sublimity-mode is off
 
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-map-version "1.0.3")
+(defconst sublimity-map-version "1.0.4")
 
 ;; * customs
 
