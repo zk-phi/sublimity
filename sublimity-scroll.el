@@ -18,29 +18,31 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.1.0
+;; Version: 1.2.0
 
 ;;; Change Log:
 
 ;; 1.0.0 first released
 ;; 1.0.1 modified the default value of speeds
 ;; 1.1.0 changed algorithm for smooth-scrolling
+;; 1.2.0 scroll is now faster in very long buffers
+;;       and easier to configure
 
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-scroll-version "1.1.0")
+(eval-when-compile (require 'cl))
+
+(defconst sublimity-scroll-version "1.2.0")
 
 ;; * customs
 
-(defcustom sublimity-scroll-weight1 10
-  "this defines the granularity of scroll speeds.
-basically, if this is set greater, scroll ends more slowly."
+(defcustom sublimity-scroll-weight 4
+  "scroll is maybe divided into N small scrolls"
   :group 'sublimity)
 
-(defcustom sublimity-scroll-weight2 1.7
-  "this defines how the scroll speed goes down.
-basically, if this is set greater, long scroll become slower."
+(defcustom sublimity-scroll-drift-length 6
+  "scroll last N lines especially slowly"
   :group 'sublimity)
 
 ;; * utils
@@ -59,20 +61,32 @@ basically, if this is set greater, long scroll become slower."
 ;; * animation
 
 (defun sublimity-scroll--gen-speeds (amount)
-  (let ((amount2 (/ amount sublimity-scroll-weight2))
-        (base sublimity-scroll-weight1))
-    (cond ((< amount 0)
-           (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
-          ((zerop amount)
-           '())
-          ((< amount2 base)
-           (make-list amount '1))
-          (t
-           (let* ((spd (expt base (floor (log amount2 base))))
-                  (times (floor (/ amount2 spd)))
-                  (rest (- amount (* times spd))))
-             (append (make-list times spd)
-                     (sublimity-scroll--gen-speeds rest)))))))
+  (let (a lst)
+    (flet ((fix-list (lst &optional eax)
+                     (if (null lst) nil
+                       (let* ((rem (car lst))
+                              (val (floor rem))
+                              (rem (+ (- rem val) (or eax 0)))
+                              (val (if (>= rem 1) (1+ val) val))
+                              (rem (if (>= rem 1) (1- rem) rem)))
+                         (cons val (fix-list (cdr lst) rem))))))
+     (cond ((integerp sublimity-scroll-weight)
+            (setq sublimity-scroll-weight (float sublimity-scroll-weight))
+            (sublimity-scroll--gen-speeds amount))
+           ((< amount 0)
+            (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
+           ((< amount sublimity-scroll-drift-length)
+            (make-list amount 1))
+           (t
+            (setq amount (- amount sublimity-scroll-drift-length))
+            ;; x = a t (t+1) / 2 <=> a = 2 x / (t^2 + t)
+            (setq a (/ (* 2 amount)
+                       (+ (expt (float sublimity-scroll-weight) 2)
+                          sublimity-scroll-weight)))
+            (dotimes (n sublimity-scroll-weight)
+              (setq lst (cons (* a (1+ n)) lst)))
+            (append (remove-if 'zerop (sort (fix-list lst) '>))
+                    (make-list sublimity-scroll-drift-length 1)))))))
 
 (defun sublimity-scroll--vscroll-effect (lins)
   (save-excursion

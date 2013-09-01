@@ -4,16 +4,11 @@ sublime text風のぬるぬるスクロール＆ミニマップ
 
 smooth-scrolling and minimap, like sublime editor
 
-** THE VERSION 1.1.0 OF "sublimity.el" BROKE BACKWARD COMPATIBILITY
+** THE VERSION 1.2.0 OF "sublimity-scroll.el" BROKE BACKWARD COMPATIBILITY
 
-sublimity turned into minor-mode. to enable sublimity, you must call
-function "sublimity-global-mode" in addition to load sublimity.el.
-
-** THE VERSION 1.1.0 OF "sublimity-scroll.el" BROKE BACKWARD COMPATIBILITY
-
-Now variables "sublimity-scroll--xspeeds" and
-"sublimity-scroll--xdecc" are not useful. Use
-"sublimity-scroll-weight1" and "sublimity-scroll-weight2" instead.
+Now variables "sublimity-scroll-weight1/2" are not useful. To
+configure the speed of scroll, use "sublimity-scroll-weight" and
+"sublimity-scroll-drift-length" instead.
 
 ** Installation
 
@@ -26,9 +21,11 @@ Require this script and some of "sublimity-scroll" "sublimity-map".
 and call command "M-x sublimity-mode".
 
 If you want to enable sublimity everywhere, call function
-sublimity-global-mode.
+sublimity-global-mode instead.
 
 : (sublimity-global-mode)
+
+** Notes
 
 When you load this script, "auto-hscroll-mode" is automatically
 disabled, and "sublimity-auto-hscroll-mode" will work
@@ -37,49 +34,30 @@ instead. Therefore, to disable horizontal scrolling, set
 
 ** sublimity-scroll Settings
 
-You may change speed of scrolling.
+You may configure speed of scroll by setting two variables.
 
-: (setq sublimity-scroll-weight1 10)
-: (setq sublimity-scroll-weight2 1.7)
+: (setq sublimity-scroll-weight 10
+:       sublimity-scroll-drift-length 5)
 
-"sublimity-scroll-weight1" defines the granularity of scroll
-speeds. basically, if set greater, scroll ends more slowly. You must
-set a positive integer for this variable.
+scroll is divided into (about) =weight + drift-length= steps. for
+example, with the configuration above, 100 lines of scrolling is
+divided into 15 steps
 
-"sublimity-scorll-weight2" defines how the scorll speed goes
-down. basically, if set greater, long scroll become slower. You must
-set a positive real number not less than "1.0" for this variable.
+: (17 15 14 12 11 8 7 5 4 2 1 1 1 1 1)
 
-*** Examples
+and it looks smoother than 1 step scroll. note that last 5 steps are
+all 1 line scrolls, because drift-length is set 5. so you may make
+scroll more smooth by setting drift-length greater. try :
 
-Consider we are going to travel 3000 lines with following
-configuration
+: (setq sublimity-scroll-weight 5
+:       sublimity-scroll-drift-length 10)
 
-: (weight1, weight2) = (10, 1.7)
+with the configuration above, scroll is divided into 15 steps again,
 
-then 3000 lines of scroll is divided into 30 steps shown below
+: (30 24 18 12 6 1 1 1 1 1 1 1 1 1 1)
 
-: (1000 1000 100 100 100 100 100 100 100 100 100
-:  10 10 10 10 10 10 10 10 10 1 1 1 1 1 1 1 1 1 1)
-
-if weight2 is much greater, "3.0" for example, then scroll takes more
-steps (slower)
-
-: (1000 100 100 100 100 100 100 100 100 100 100 100
-:  100 100 100 100 100 100 100 10 10 10 10 10 10 10
-:  10 10 10 10 10 10 10 10 10 10 10 1 1 1 1 1 1 1 1
-:  1 1 1 1 1 1 1 1 1 1 1 1)
-
-In examples above, all speeds of each steps are all 10^n, because
-weight1 is "10". if weight1 is much fewer, "2" for example, then
-
-: (1024 1024 512 256 64 64 32 8 8 4 2 1 1)
-
-or if much greater, "15" for example, then
-
-: (225 225 225 225 225 225 225 225 225 225 225 225
-:  15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15
-:  15 15 15 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)
+but last *10* steps are all 1 line scrollings. this looks smoother but
+perhaps more annoying for some users.
 
 ** sublimity-map Settings
 *** sublimity-map-size, sublimity-map-fraction
