@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.4
+;; Version: 1.0.5
 
 ;;; Change Log:
 
@@ -29,11 +29,12 @@
 ;;       option disable minimap when idling
 ;;       added sublimity-map-on-commands
 ;; 1.0.4 disable idle-timer while sublimity-mode is off
+;; 1.0.5 cancel idle-timer when sublimity-mode is turned off
 
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-map-version "1.0.4")
+(defconst sublimity-map-version "1.0.5")
 
 ;; * customs
 
@@ -111,10 +112,12 @@ you may assume (selected-window) and (current-buffer) are minimap")
 
 ;; * trigger
 
+(defvar sublimity-map--delay nil)
 (defvar sublimity-map--timer nil)
 
 (defun sublimity-map-set-delay (secs)
   "set sublimity-map delay to SECs. if secs is 'inf, disable minimap when idling."
+  (setq sublimity-map--delay secs)
   (cond ((not sublimity-map--timer)
          (or (eq secs 'inf)
              (setq sublimity-map--timer
@@ -124,6 +127,10 @@ you may assume (selected-window) and (current-buffer) are minimap")
          (setq sublimity-map--timer nil))
         (t
          (timer-set-idle-time sublimity-map--timer secs t))))
+
+(defun sublimity-map--restore-timer ()
+  (when sublimity-map--delay
+    (sublimity-map-set-delay sublimity-map--delay)))
 
 (defun sublimity-map--pre-command ()
   (sublimity-map--kill))
@@ -137,9 +144,12 @@ you may assume (selected-window) and (current-buffer) are minimap")
     (sublimity-map--update)))
 
 (defun sublimity-map--idle ()
-  (when sublimity-mode
-    (sublimity-map--update)))
+  (if sublimity-mode
+      (sublimity-map--update)
+    (cancel-timer sublimity-map--timer)
+    (setq sublimity-map--timer nil)))
 
+(add-hook 'sublimity-mode-hook 'sublimity-map--restore-timer)
 (add-hook 'sublimity--post-vscroll-functions 'sublimity-map--post-vscroll)
 (add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command)
 (add-hook 'sublimity--post-command-functions 'sublimity-map--post-command)

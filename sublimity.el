@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.1.0
+;; Version: 1.1.1
 
 ;;; Commentary:
 
@@ -42,16 +42,21 @@
 
 ;; 1.0.0 first released
 ;; 1.1.0 turned into minor-mode
+;; 1.1.1 added sublimity-mode-hook
 
 ;;; Code:
 
-(defconst sublimity-version "1.1.0")
+(defconst sublimity-version "1.1.1")
 
 ;; * customs
 
 (defgroup sublimity nil
   "smooth-scrolling and minimap, like sublime editor"
   :group 'emacs)
+
+(defcustom sublimity-mode-hook nil
+  "hook run when entering sublimity-mode"
+  :group 'sublimity)
 
 ;; * minor mode
 
@@ -62,7 +67,9 @@
   :init-value nil
   :global nil
   (if sublimity-mode
-      (setq auto-hscroll-mode nil)
+      (progn
+        (setq auto-hscroll-mode nil)
+        (run-hooks 'sublimity-mode-hook))
     (setq auto-hscroll-mode sublimity-auto-hscroll-mode)))
 
 (define-globalized-minor-mode sublimity-global-mode

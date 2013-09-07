@@ -98,7 +98,7 @@ updated even when scroll does not occur.
 : (sublimity-map-set-delay 5)
 
 With settings above, minimap is displayed after 5 seconds of idle
-time. You can also disable minimap on idle, by passing "'inf" to
+time. You can also cancel this timer, by passing "'inf" to
 sublimity-map-delay.
 
 : (sublimity-map-set-delay 'inf)
