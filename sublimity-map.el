@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.3
+;; Version: 1.0.4
 
 ;;; Change Log:
 
@@ -49,9 +49,7 @@
   "if minimap should be automatically displayed on scroll"
   :group 'sublimity)
 
-(defcustom sublimity-map-on-commands
-  '(previous-line next-line backward-paragraph forward-paragraph
-                  end-of-defun beginning-of-defun)
+(defcustom sublimity-map-on-commands nil
   "commands after which the minimap should be displayed"
   :group 'sublimity)
 
@@ -113,8 +111,7 @@ you may assume (selected-window) and (current-buffer) are minimap")
 
 ;; * trigger
 
-(defvar sublimity-map--timer
-  (run-with-idle-timer 2 t 'sublimity-map--idle))
+(defvar sublimity-map--timer nil)
 
 (defun sublimity-map-set-delay (secs)
   "set sublimity-map delay to SECs. if secs is 'inf, disable minimap when idling."
