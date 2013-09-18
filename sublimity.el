@@ -158,6 +158,20 @@
 (add-hook 'pre-command-hook 'sublimity--pre-command)
 (add-hook 'post-command-hook 'sublimity--post-command t)
 
+;; * workaround (FIXME)
+
+(defadvice sublimity--pre-command (around sublimity--workaround activate)
+  (condition-case err
+      ad-do-it
+    (error (progn (message "an error occurred in sublimity--pre-command.")
+                  (sit-for 1)))))
+
+(defadvice sublimity--post-command (around sublimity--workaround activate)
+  (condition-case err
+      ad-do-it
+    (error (progn (message "an error occurred in sublimity--post-command.")
+                  (sit-for 1)))))
+
 ;; * provide
 
 (provide 'sublimity)
