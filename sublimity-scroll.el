@@ -31,6 +31,7 @@
 ;;; Code:
 
 (require 'sublimity)
+(require 'cl-lib)
 (eval-when-compile (require 'cl))
 
 (defconst sublimity-scroll-version "1.2.0")
@@ -70,23 +71,23 @@
                               (val (if (>= rem 1) (1+ val) val))
                               (rem (if (>= rem 1) (1- rem) rem)))
                          (cons val (fix-list (cdr lst) rem))))))
-     (cond ((integerp sublimity-scroll-weight)
-            (setq sublimity-scroll-weight (float sublimity-scroll-weight))
-            (sublimity-scroll--gen-speeds amount))
-           ((< amount 0)
-            (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
-           ((< amount sublimity-scroll-drift-length)
-            (make-list amount 1))
-           (t
-            (setq amount (- amount sublimity-scroll-drift-length))
-            ;; x = a t (t+1) / 2 <=> a = 2 x / (t^2 + t)
-            (setq a (/ (* 2 amount)
-                       (+ (expt (float sublimity-scroll-weight) 2)
-                          sublimity-scroll-weight)))
-            (dotimes (n sublimity-scroll-weight)
-              (setq lst (cons (* a (1+ n)) lst)))
-            (append (remove-if 'zerop (sort (fix-list lst) '>))
-                    (make-list sublimity-scroll-drift-length 1)))))))
+      (cond ((integerp sublimity-scroll-weight)
+             (setq sublimity-scroll-weight (float sublimity-scroll-weight))
+             (sublimity-scroll--gen-speeds amount))
+            ((< amount 0)
+             (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
+            ((< amount sublimity-scroll-drift-length)
+             (make-list amount 1))
+            (t
+             (setq amount (- amount sublimity-scroll-drift-length))
+             ;; x = a t (t+1) / 2 <=> a = 2 x / (t^2 + t)
+             (setq a (/ (* 2 amount)
+                        (+ (expt (float sublimity-scroll-weight) 2)
+                           sublimity-scroll-weight)))
+             (dotimes (n sublimity-scroll-weight)
+               (setq lst (cons (* a (1+ n)) lst)))
+             (append (cl-remove-if 'zerop (sort (fix-list lst) '>))
+                     (make-list sublimity-scroll-drift-length 1)))))))
 
 (defun sublimity-scroll--vscroll-effect (lins)
   (save-excursion
