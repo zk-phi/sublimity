@@ -4,11 +4,11 @@ sublime text風のぬるぬるスクロール＆ミニマップ
 
 smooth-scrolling and minimap, like sublime editor
 
-** THE VERSION 1.2.0 OF "sublimity-scroll.el" BROKE BACKWARD COMPATIBILITY
+** NOTE: sublimity NOW DEPENDS ON "cl-lib.el"
 
-Now variables "sublimity-scroll-weight1/2" are not useful. To
-configure the speed of scroll, use "sublimity-scroll-weight" and
-"sublimity-scroll-drift-length" instead.
+cl-lib.el is a lisp library which is bundled from Emacs version
+24.3. If you use Emacs<24.3, you must download and put cl-lib.el to
+your load-path.
 
 ** Installation
 
