@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.6
+;; Version: 1.0.7
 
 ;;; Change Log:
 
@@ -31,6 +31,7 @@
 ;; 1.0.4 disable idle-timer while sublimity-mode is off
 ;; 1.0.5 cancel idle-timer when sublimity-mode is turned off
 ;; 1.0.6 add automargin.el workaround
+;; 1.0.7 add option sublimity-map-keep-commands
 
 ;;; Code:
 
@@ -53,6 +54,14 @@
 
 (defcustom sublimity-map-on-commands nil
   "commands after which the minimap should be displayed"
+  :group 'sublimity)
+
+(defcustom sublimity-map-keep-commands
+  '(previous-line next-line forward-char backward-char
+                  forward-sexp backward-sexp
+                  forward-word backward-word
+                  subword-forward subword-backward)
+  "commands which should not kill the minimap"
   :group 'sublimity)
 
 ;; * vars
@@ -134,7 +143,8 @@ you may assume (selected-window) and (current-buffer) are minimap")
     (sublimity-map-set-delay sublimity-map--delay)))
 
 (defun sublimity-map--pre-command ()
-  (sublimity-map--kill))
+  (unless (member this-command sublimity-map-keep-commands)
+   (sublimity-map--kill)))
 
 (defun sublimity-map--post-command ()
   (when (member this-command sublimity-map-on-commands)
