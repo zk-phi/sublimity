@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.5
+;; Version: 1.0.6
 
 ;;; Change Log:
 
@@ -30,6 +30,7 @@
 ;;       added sublimity-map-on-commands
 ;; 1.0.4 disable idle-timer while sublimity-mode is off
 ;; 1.0.5 cancel idle-timer when sublimity-mode is turned off
+;; 1.0.6 add automargin.el workaround
 
 ;;; Code:
 
@@ -153,6 +154,14 @@ you may assume (selected-window) and (current-buffer) are minimap")
 (add-hook 'sublimity--post-vscroll-functions 'sublimity-map--post-vscroll)
 (add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command)
 (add-hook 'sublimity--post-command-functions 'sublimity-map--post-command)
+
+;; * automargin.el workaround
+
+(eval-after-load 'automargin
+  '(defadvice sublimity-map--update
+     (around sublimity-map-automargin-workaround activate)
+     (flet ((automargin-function () nil))
+       ad-do-it)))
 
 ;; * provide
 
