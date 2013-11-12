@@ -35,7 +35,7 @@
 ;;; Code:
 
 (require 'sublimity)
-(defconst sublimity-map-version "1.0.5")
+(defconst sublimity-map-version "1.0.6")
 
 ;; * customs
 
