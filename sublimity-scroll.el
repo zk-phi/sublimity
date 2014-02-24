@@ -19,6 +19,7 @@
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
 ;; Version: 1.2.0
+;; Package-Requires: ((cl-lib "0.1"))
 
 ;;; Change Log:
 
@@ -32,7 +33,6 @@
 
 (require 'sublimity)
 (require 'cl-lib)
-(eval-when-compile (require 'cl))
 
 (defconst sublimity-scroll-version "1.2.0")
 
@@ -63,14 +63,14 @@
 
 (defun sublimity-scroll--gen-speeds (amount)
   (let (a lst)
-    (flet ((fix-list (lst &optional eax)
-                     (if (null lst) nil
-                       (let* ((rem (car lst))
-                              (val (floor rem))
-                              (rem (+ (- rem val) (or eax 0)))
-                              (val (if (>= rem 1) (1+ val) val))
-                              (rem (if (>= rem 1) (1- rem) rem)))
-                         (cons val (fix-list (cdr lst) rem))))))
+    (cl-labels ((fix-list (lst &optional eax)
+                          (if (null lst) nil
+                            (let* ((rem (car lst))
+                                   (val (floor rem))
+                                   (rem (+ (- rem val) (or eax 0)))
+                                   (val (if (>= rem 1) (1+ val) val))
+                                   (rem (if (>= rem 1) (1- rem) rem)))
+                              (cons val (fix-list (cdr lst) rem))))))
       (cond ((integerp sublimity-scroll-weight)
              (setq sublimity-scroll-weight (float sublimity-scroll-weight))
              (sublimity-scroll--gen-speeds amount))
@@ -84,7 +84,7 @@
              (setq a (/ (* 2 amount)
                         (+ (expt (float sublimity-scroll-weight) 2)
                            sublimity-scroll-weight)))
-             (dotimes (n sublimity-scroll-weight)
+             (cl-dotimes (n sublimity-scroll-weight)
                (setq lst (cons (* a (1+ n)) lst)))
              (append (cl-remove-if 'zerop (sort (fix-list lst) '>))
                      (make-list sublimity-scroll-drift-length 1)))))))
@@ -93,7 +93,7 @@
   (save-excursion
     (let ((speeds (sublimity-scroll--gen-speeds lins)))
       (sublimity-scroll--vscroll (- lins))
-      (dolist (speed speeds)
+      (cl-dolist (speed speeds)
         (sublimity-scroll--vscroll speed)
         (redisplay t)))))
 
@@ -101,7 +101,7 @@
   (save-excursion
     (let ((speeds (sublimity-scroll--gen-speeds cols)))
       (sublimity-scroll--hscroll (- cols))
-      (dolist (speed speeds)
+      (cl-dolist (speed speeds)
         (sublimity-scroll--hscroll speed)
         (redisplay t)))))
 
