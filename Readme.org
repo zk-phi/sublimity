@@ -12,13 +12,13 @@ your load-path.
 
 ** Installation
 
-Require this script and some of "sublimity-scroll" "sublimity-map".
+Require this script and some of "sublimity-scroll" "sublimity-map"
 
 : (require 'sublimity)
 : (require 'sublimity-scroll)
 : (require 'sublimity-map)
 
-and call command "M-x sublimity-mode".
+then call command "M-x sublimity-mode".
 
 If you want to enable sublimity everywhere, call function
 sublimity-global-mode instead.
@@ -60,10 +60,11 @@ but last *10* steps are all 1 line scrollings. this looks smoother but
 perhaps more annoying for some users.
 
 ** sublimity-map Settings
-*** sublimity-map-size, sublimity-map-fraction
+*** sublimity-map-size, fraction, text-scale
 
 : (setq sublimity-map-size 20)
 : (setq sublimity-map-fraction 0.3)
+: (setq sublimity-map-text-scale -7)
 
 "sublimity-map-fraction" defines the maximum fraction of width that
 minimap can get.
@@ -85,9 +86,8 @@ When non-nil, minimap is automatically displayed on every scrolling.
 
 *** sublimity-map-on-commands
 
-: (setq sublimity-map-on-commands
-:       '(previous-line next-line backward-paragraph forward-paragraph
-:                       end-of-defun beginning-of-defun))
+: (add-to-list sublimity-map-on-commands 'backward-paragraph)
+: (add-to-list sublimity-map-on-commands 'forward-paragraph)
 
 Set this variable to a list of command names, after which minimap
 should be updated. If one of these commands are invoked, minimap is
