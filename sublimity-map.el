@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.0.7
+;; Version: 1.0.8
 
 ;;; Change Log:
 
@@ -32,6 +32,7 @@
 ;; 1.0.5 cancel idle-timer when sublimity-mode is turned off
 ;; 1.0.6 add automargin.el workaround
 ;; 1.0.7 add option sublimity-map-keep-commands
+;; 1.0.8 add option sublimity-map-text-scale
 
 ;;; Code:
 
@@ -40,11 +41,11 @@
 
 ;; * customs
 
-(defcustom sublimity-map-size 20
+(defcustom sublimity-map-size 12
   "width of minimap"
   :group 'sublimity)
 
-(defcustom sublimity-map-fraction 0.3
+(defcustom sublimity-map-fraction 0.1
   "maximum fraction of minimap width"
   :group 'sublimity)
 
@@ -56,11 +57,17 @@
   "commands after which the minimap should be displayed"
   :group 'sublimity)
 
+(defcustom sublimity-map-text-scale -10
+  "size of texts in minimap"
+  :group 'sublimity)
+
 (defcustom sublimity-map-keep-commands
   '(previous-line next-line forward-char backward-char
                   forward-sexp backward-sexp
                   forward-word backward-word
-                  subword-forward subword-backward)
+                  subword-forward subword-backward
+                  move-end-of-line move-beginning-of-line
+                  back-to-indentation)
   "commands which should not kill the minimap"
   :group 'sublimity)
 
@@ -106,7 +113,7 @@ you may assume (selected-window) and (current-buffer) are minimap")
               (switch-to-buffer
                (setq sublimity-map--buffer (generate-new-buffer "*nurumap*")))
               (insert str)
-              (text-scale-set -7)
+              (text-scale-set sublimity-map-text-scale)
               (run-hooks 'sublimity-map-setup-hook)))))
       ;; update
       (when (sublimity-map--live-p)

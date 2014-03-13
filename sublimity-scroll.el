@@ -84,7 +84,7 @@
              (setq a (/ (* 2 amount)
                         (+ (expt (float sublimity-scroll-weight) 2)
                            sublimity-scroll-weight)))
-             (cl-dotimes (n sublimity-scroll-weight)
+             (dotimes (n sublimity-scroll-weight)
                (setq lst (cons (* a (1+ n)) lst)))
              (append (cl-remove-if 'zerop (sort (fix-list lst) '>))
                      (make-list sublimity-scroll-drift-length 1)))))))
@@ -93,7 +93,7 @@
   (save-excursion
     (let ((speeds (sublimity-scroll--gen-speeds lins)))
       (sublimity-scroll--vscroll (- lins))
-      (cl-dolist (speed speeds)
+      (dolist (speed speeds)
         (sublimity-scroll--vscroll speed)
         (redisplay t)))))
 
@@ -101,7 +101,7 @@
   (save-excursion
     (let ((speeds (sublimity-scroll--gen-speeds cols)))
       (sublimity-scroll--hscroll (- cols))
-      (cl-dolist (speed speeds)
+      (dolist (speed speeds)
         (sublimity-scroll--hscroll speed)
         (redisplay t)))))
 
