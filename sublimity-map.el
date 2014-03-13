@@ -45,7 +45,7 @@
   "width of minimap"
   :group 'sublimity)
 
-(defcustom sublimity-map-fraction 0.1
+(defcustom sublimity-map-fraction 0.2
   "maximum fraction of minimap width"
   :group 'sublimity)
 
