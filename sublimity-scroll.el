@@ -97,7 +97,8 @@
       (sublimity-scroll--vscroll (- lins))
       (dolist (speed speeds)
         (sublimity-scroll--vscroll speed)
-        (redisplay t)))))
+        (force-window-update (selected-window))
+        (redisplay)))))
 
 (defun sublimity-scroll--hscroll-effect (cols)
   (save-excursion
@@ -105,7 +106,8 @@
       (sublimity-scroll--hscroll (- cols))
       (dolist (speed speeds)
         (sublimity-scroll--hscroll speed)
-        (redisplay t)))))
+        (force-window-update (selected-window))
+        (redisplay)))))
 
 ;; * triggers
 
