@@ -61,16 +61,18 @@
 
 ;; * animation
 
+;; should this be cached ?
 (defun sublimity-scroll--gen-speeds (amount)
-  (let (a lst)
-    (cl-labels ((fix-list (lst &optional eax)
-                          (if (null lst) nil
-                            (let* ((rem (car lst))
-                                   (val (floor rem))
-                                   (rem (+ (- rem val) (or eax 0)))
-                                   (val (if (>= rem 1) (1+ val) val))
-                                   (rem (if (>= rem 1) (1- rem) rem)))
-                              (cons val (fix-list (cdr lst) rem))))))
+  "10 => '(2 2 2 1 1 1)"
+  (cl-labels ((fix-list (lst &optional eax)
+                        (if (null lst) nil
+                          (let* ((rem (car lst))
+                                 (val (floor rem))
+                                 (rem (+ (- rem val) (or eax 0)))
+                                 (val (if (>= rem 1) (1+ val) val))
+                                 (rem (if (>= rem 1) (1- rem) rem)))
+                            (cons val (fix-list (cdr lst) rem))))))
+    (let (a lst)
       (cond ((integerp sublimity-scroll-weight)
              (setq sublimity-scroll-weight (float sublimity-scroll-weight))
              (sublimity-scroll--gen-speeds amount))
@@ -113,11 +115,8 @@
 (defun sublimity-scroll--post-hscroll (cols)
   (sublimity-scroll--hscroll-effect cols))
 
-(add-hook 'sublimity--post-vscroll-functions
-          'sublimity-scroll--post-vscroll)
-
-(add-hook 'sublimity--post-hscroll-functions
-          'sublimity-scroll--post-hscroll)
+(add-hook 'sublimity--post-vscroll-functions 'sublimity-scroll--post-vscroll t)
+(add-hook 'sublimity--post-hscroll-functions 'sublimity-scroll--post-hscroll t)
 
 ;; * provide
 

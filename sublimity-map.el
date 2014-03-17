@@ -41,7 +41,7 @@
 
 ;; * customs
 
-(defcustom sublimity-map-size 12
+(defcustom sublimity-map-size 15
   "width of minimap"
   :group 'sublimity)
 
@@ -99,20 +99,21 @@ you may assume (selected-window) and (current-buffer) are minimap")
 
 (defun sublimity-map--update ()
   (let* ((margins (window-margins))
-         (width (+ (window-width) (or (car margins) 0) (or (cdr margins) 0))))
+         (width (+ (window-width) (or (car margins) 0) (or (cdr margins) 0)))
+         (split-ok (<= (/ sublimity-map-size width 1.0) sublimity-map-fraction)))
     (unless (window-minibuffer-p)
       ;; make window
       (unless (sublimity-map--live-p)
         (when (setq sublimity-map--window
-                    (when (<= (/ sublimity-map-size width 1.0)
-                              sublimity-map-fraction)
-                      (split-window (selected-window)
-                                    (- width sublimity-map-size) t)))
+                    (when split-ok
+                      (split-window (selected-window) (- sublimity-map-size) t)))
           (let ((str (buffer-string)))
             (with-selected-window sublimity-map--window
+              ;; (switch-to-buffer
+              ;;  (setq sublimity-map--buffer (generate-new-buffer "*minimap*")))
+              ;; (insert str)
               (switch-to-buffer
-               (setq sublimity-map--buffer (generate-new-buffer "*nurumap*")))
-              (insert str)
+               (setq sublimity-map--buffer (clone-indirect-buffer "*minimap*" nil)))
               (text-scale-set sublimity-map-text-scale)
               (run-hooks 'sublimity-map-setup-hook)))))
       ;; update
@@ -169,7 +170,7 @@ you may assume (selected-window) and (current-buffer) are minimap")
 
 (add-hook 'sublimity-mode-hook 'sublimity-map--restore-timer)
 (add-hook 'sublimity--post-vscroll-functions 'sublimity-map--post-vscroll)
-(add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command)
+(add-hook 'sublimity--pre-command-functions 'sublimity-map--pre-command t)
 (add-hook 'sublimity--post-command-functions 'sublimity-map--post-command)
 
 ;; * automargin.el workaround
