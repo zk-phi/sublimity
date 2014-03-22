@@ -116,10 +116,3 @@ Following functions are available to hide some UI parts.
 : (sublimity-attractive-hide-vertical-border)
 : (sublimity-attractive-hide-fringes)
 : (sublimity-attractive-hide-modelines)
-
-** Known Bugs, Limitations
-
-+ if sublimity-scroll does not animate scroll correctly, try to load
-  sublimity at the bottom of your init file (perhaps some libraries
-  conflict with sublimity in post/pre-command-hook, and reordering hooks
-  possibly solve the problem)
