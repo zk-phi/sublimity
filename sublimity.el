@@ -1,4 +1,4 @@
-;;; sublimity.el --- smooth-scrolling and minimap, like sublime editor
+;;; sublimity.el --- smooth-scrolling, minimap and distraction-free mode
 
 ;; Copyright (C) 2013 zk_phi
 
