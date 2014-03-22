@@ -144,11 +144,11 @@ selected."
         (ind (make-indirect-buffer
               base (concat " *minimap/" (buffer-name base) "*"))))
     (with-current-buffer ind
-      (setq vertical-scroll-bar              nil
-            truncate-lines                   t
-            buffer-read-only                 t
-            mode-line-format                 (and mode-line-format "")
-            sublimity-map--minimap-buffer-p  t
+      (setq vertical-scroll-bar             nil
+            truncate-lines                  t
+            buffer-read-only                t
+            mode-line-format                (and mode-line-format "")
+            sublimity-map--minimap-buffer-p t
             sublimity-map--buffer           base
             sublimity-map--active-overlay   (make-overlay 0 0)
             sublimity-map--current-overlay  (make-overlay 0 0))
@@ -222,7 +222,7 @@ selected."
 ;; + run with timer
 
 (defvar sublimity-map--timer
-  (run-with-idle-timer 0.9 t 'sublimity-map-show))
+  (run-with-idle-timer 1 t 'sublimity-map-show))
 
 (defun sublimity-map-set-delay (sec)
   (cond ((and (memq sec '(nil inf)))
