@@ -46,10 +46,11 @@
 ;; 1.1.2 add sublimity-handle-scroll-criteria
 ;;       remove add-hook in toplevel
 ;;       make sublimity-mode global
+;; 1.1.3 scroll-bar workaround
 
 ;;; Code:
 
-(defconst sublimity-version "1.1.2")
+(defconst sublimity-version "1.1.3")
 
 ;; + customs
 
@@ -66,7 +67,11 @@
     (eq sublimity--prev-wnd (selected-window))
     (or (not (boundp 'cua--rectangle)) (not cua--rectangle))
     (or (not (boundp 'multiple-cursors-mode)) (not multiple-cursors-mode))
-    (not (eq major-mode 'shell-mode)))
+    (not (eq major-mode 'shell-mode))
+    (not (memq this-command '(scroll-bar-drag
+                              scroll-bar-toolkit-scroll
+                              scroll-bar-scroll-up
+                              scroll-bar-scroll-down))))
   "if any of the sexps evaluates to nil, sublimity does not
 handle scrolling."
   :group 'sublimity)
