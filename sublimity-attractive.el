@@ -1,6 +1,6 @@
 ;;; sublimity-attractive.el --- hide distractive objects
 
-;; Copyright (C) 2013 zk_phi
+;; Copyright (C) 2013-2015 zk_phi
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -52,6 +52,10 @@
   (interactive)
   (setq-default mode-line-format nil))
 
+(defun sublimity-attractive--window-width (window)
+  (let ((margins (window-margins window)))
+    (+ (window-width window) (or (car margins) 0) (or (cdr margins) 0))))
+
 (defun sublimity-attractive-window-change ()
   (when sublimity-attractive-centering-width
     (let ((windows (window-list)))
@@ -60,8 +64,8 @@
                  (window-live-p sublimity-map--window))
         (let* ((left sublimity-map--window)
                (right (window-parameter left 'sublimity-map-partner))
-               (margin (max (/ (- (+ (window-total-width left)
-                                     (window-total-width right))
+               (margin (max (/ (- (+ (sublimity-attractive--window-width left)
+                                     (sublimity-attractive--window-width right))
                                   sublimity-attractive-centering-width) 2) 0)))
           (set-window-margins left 0 margin)
           (set-window-margins right margin 0)
@@ -69,7 +73,7 @@
       ;; process other windows
       (dolist (window windows)
         (unless (window-minibuffer-p window)
-          (let ((margin (max (/ (- (window-total-width window)
+          (let ((margin (max (/ (- (sublimity-attractive--window-width window)
                                    sublimity-attractive-centering-width) 2) 0)))
             (set-window-margins window margin margin)))))))
 
