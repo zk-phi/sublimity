@@ -1,6 +1,6 @@
 ;;; sublimity.el --- smooth-scrolling, minimap and distraction-free mode
 
-;; Copyright (C) 2013 zk_phi
+;; Copyright (C) 2013-2015 zk_phi
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ handle scrolling."
         (t
          (remove-hook 'pre-command-hook 'sublimity--pre-command)
          (remove-hook 'post-command-hook 'sublimity--post-command)
-         (remove-hook 'window-configuration-change-hook 'sublimity--window-change t)
+         (remove-hook 'window-configuration-change-hook 'sublimity--window-change)
          (setq auto-hscroll-mode sublimity-auto-hscroll-mode))))
 
 ;; + commands (for backward compatibility)
