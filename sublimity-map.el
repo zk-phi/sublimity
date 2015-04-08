@@ -1,6 +1,6 @@
 ;;; sublimity-map.el --- minimap
 
-;; Copyright (C) 2013 zk_phi
+;; Copyright (C) 2013-2015 zk_phi
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -64,9 +64,9 @@
   :group 'sublimity)
 
 (defcustom sublimity-map-criteria
-  '((not buffer-read-only)
-    (not (window-minibuffer-p))
-    (derived-mode-p 'prog-mode)
+  '((not (window-minibuffer-p))
+    (or (derived-mode-p 'prog-mode)
+        (derived-mode-p 'text-mode))
     (<= (/ sublimity-map-size (window-total-width) 1.0)
         sublimity-map-max-fraction))
   "sexps that must be evaluated to non-nil when creating minimap"
@@ -140,8 +140,7 @@ selected."
 
 (defun sublimity-map--generate-buffer (base)
   "Make minimap buffer for this buffer."
-  (let ((mlf mode-line-format)
-        (ind (make-indirect-buffer
+  (let ((ind (make-indirect-buffer
               base (concat " *minimap/" (buffer-name base) "*"))))
     (with-current-buffer ind
       (setq vertical-scroll-bar             nil
@@ -225,7 +224,7 @@ selected."
   (run-with-idle-timer 1 t 'sublimity-map-show))
 
 (defun sublimity-map-set-delay (sec)
-  (cond ((and (memq sec '(nil inf)))
+  (cond ((null sec)
          (when sublimity-map--timer
            (cancel-timer sublimity-map--timer))
          (add-hook 'sublimity--post-command-functions
