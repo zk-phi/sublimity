@@ -57,24 +57,31 @@
     (+ (window-width window) (or (car margins) 0) (or (cdr margins) 0))))
 
 (defun sublimity-attractive-window-change ()
-  (when sublimity-attractive-centering-width
-    (let ((windows (window-list)))
-      ;; process minimap window first
-      (when (and (boundp 'sublimity-map--window)
-                 (window-live-p sublimity-map--window))
-        (let* ((left sublimity-map--window)
-               (right (window-parameter left 'sublimity-map-partner))
-               (margin (max (/ (- (+ (sublimity-attractive--window-width left)
-                                     (sublimity-attractive--window-width right))
-                                  sublimity-attractive-centering-width) 2) 0)))
+  (let ((windows (window-list)))
+    ;; process minimap window first
+    (when (and (boundp 'sublimity-map--window)
+               (window-live-p sublimity-map--window))
+      (let* ((left sublimity-map--window)
+             (right (window-parameter left 'sublimity-map-partner))
+             (target (with-selected-window left
+                       sublimity-attractive-centering-width))
+             (margin (and target
+                          (max (/ (- (+ (sublimity-attractive--window-width left)
+                                        (sublimity-attractive--window-width right))
+                                     target) 2) 0))))
+        (when margin
           (set-window-margins left 0 margin)
-          (set-window-margins right margin 0)
-          (setq windows (delq right (delq left windows)))))
-      ;; process other windows
-      (dolist (window windows)
-        (unless (window-minibuffer-p window)
-          (let ((margin (max (/ (- (sublimity-attractive--window-width window)
-                                   sublimity-attractive-centering-width) 2) 0)))
+          (set-window-margins right margin 0))
+        (setq windows (delq right (delq left windows)))))
+    ;; process other windows
+    (dolist (window windows)
+      (unless (window-minibuffer-p window)
+        (let* ((target (with-selected-window window
+                         sublimity-attractive-centering-width))
+               (margin (and target
+                            (max (/ (- (sublimity-attractive--window-width window)
+                                       target) 2) 0))))
+          (when margin
             (set-window-margins window margin margin)))))))
 
 (add-hook 'sublimity--window-change-functions 'sublimity-attractive-window-change t)
