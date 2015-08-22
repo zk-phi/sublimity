@@ -1,6 +1,6 @@
 * sublimity.el
 
-sublime text風のスムーススクロール、ミニマップ、集中モード
+sublime 風のスムーススクロール、ミニマップ、集中モード
 
 smooth-scrolling, minimap and distraction-free mode (inspired by the
 sublime editor)
@@ -11,14 +11,7 @@ sublime editor)
 
 ** NOTE: INCOMPATIBLE CHANGES IN THE LATEST VERSION
 
-- sublimity-mode is now a global minor-mode, thus
-  "sublimity-global-mode" is not useful anymore.
-
-- sublimity-map is rewritten for better performance and following
-  variables became no use.
-  + =sublimity-map-on-scroll=
-  + =sublmity-map-on-commands=
-  + =sublimity-map-keep-commands=
+- obsolete functions are now removed
 
 ** Installation
 

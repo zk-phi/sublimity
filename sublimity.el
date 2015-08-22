@@ -98,32 +98,6 @@ handle scrolling."
          (remove-hook 'window-configuration-change-hook 'sublimity--window-change)
          (setq auto-hscroll-mode sublimity-auto-hscroll-mode))))
 
-;; + commands (for backward compatibility)
-
-;;;###autoload
-(defun sublimity-scroll ()
-  (interactive)
-  (require 'sublimity-scroll nil t))
-(make-obsolete
- 'sublimity-scroll "use (require 'sublimity-scroll) instead."
- "sublimity 1.1.3")
-
-;;;###autoload
-(defun sublimity-map ()
-  (interactive)
-  (require 'sublimity-map nil t))
-(make-obsolete
- 'sublimity-map "use (require 'sublimity-map) instead."
- "sublimity 1.1.3")
-
-;;;###autoload
-(defun sublimity-global-mode (&optional n)
-  (interactive)
-  (sublimity-mode n))
-(make-obsolete
- 'sublimity-global-mode "sublimity-mode now affects globally."
- "sublimity 1.1.3")
-
 ;; + sublimity common vars, functions
 
 (defvar sublimity--pre-command-functions nil)
@@ -147,6 +121,7 @@ handle scrolling."
       (run-hooks 'hook))))
 
 (defun sublimity--horizontal-recenter ()
+  ;; NOT accurate for some propertized texts.
   (let ((cols (- (current-column)
                  (window-hscroll)
                  (/ (window-width) 2))))
