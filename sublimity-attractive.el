@@ -30,7 +30,8 @@
 (defconst sublimity-attractive-version "1.0.0")
 
 (defcustom sublimity-attractive-centering-width 110
-  "Buffer width is truncated to this value to be drawn centered."
+  "When non-nil, buffer width is truncated to this value and
+display centered."
   :group 'sublimity)
 
 (defun sublimity-attractive-hide-bars ()
