@@ -64,7 +64,7 @@ but the last *10* steps are all 1 line scrolls. this looks smoother
 but perhaps more annoying for some users.
 
 *** sublimity-map (minimap)
-**** sublimty-map-size, fraction, text-scale
+**** sublimity-map-size, fraction, text-scale
 
 : (setq sublimity-map-size 20)
 : (setq sublimity-map-fraction 0.3)
