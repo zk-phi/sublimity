@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: http://hins11.yu-yake.com/
-;; Version: 1.2.0
+;; Version: 1.2.1
 ;; Package-Requires: ((cl-lib "0.1"))
 
 ;;; Change Log:
@@ -28,13 +28,14 @@
 ;; 1.1.0 changed algorithm for smooth-scrolling
 ;; 1.2.0 scroll is now faster in very long buffers
 ;;       and easier to configure
+;; 1.2.1 add option `sublimity-scroll-hide-cursor'
 
 ;;; Code:
 
 (require 'sublimity)
 (require 'cl-lib)
 
-(defconst sublimity-scroll-version "1.2.0")
+(defconst sublimity-scroll-version "1.2.1")
 
 ;; * customs
 
@@ -44,6 +45,10 @@
 
 (defcustom sublimity-scroll-drift-length 6
   "scroll last N lines especially slowly"
+  :group 'sublimity)
+
+(defcustom sublimity-scroll-hide-cursor t
+  "When non-nil, hide cursor while scrolling."
   :group 'sublimity)
 
 ;; * utils
@@ -93,7 +98,8 @@
 
 (defun sublimity-scroll--vscroll-effect (lins)
   (save-excursion
-    (let ((speeds (sublimity-scroll--gen-speeds lins)))
+    (let ((speeds (sublimity-scroll--gen-speeds lins))
+          (cursor-type (and (not sublimity-scroll-hide-cursor) cursor-type)))
       (sublimity-scroll--vscroll (- lins))
       (dolist (speed speeds)
         (sublimity-scroll--vscroll speed)
@@ -102,7 +108,8 @@
 
 (defun sublimity-scroll--hscroll-effect (cols)
   (save-excursion
-    (let ((speeds (sublimity-scroll--gen-speeds cols)))
+    (let ((speeds (sublimity-scroll--gen-speeds cols))
+          (cursor-type (and (not sublimity-scroll-hide-cursor) cursor-type)))
       (sublimity-scroll--hscroll (- cols))
       (dolist (speed speeds)
         (sublimity-scroll--hscroll speed)
