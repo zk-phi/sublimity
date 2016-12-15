@@ -86,6 +86,11 @@ display centered."
           (when margin
             (set-window-margins window margin margin)))))))
 
+(defun sublimity-attractive--clear-window-margins ()
+  (dolist (window (window-list))
+    (set-window-margins window 0 0)))
+
+(add-hook 'sublimity-mode-turn-off-hook 'sublimity-attractive--clear-window-margins t)
 (add-hook 'sublimity--window-change-functions 'sublimity-attractive-window-change t)
 
 ;; + provide

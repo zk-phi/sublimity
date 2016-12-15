@@ -82,6 +82,16 @@ handle scrolling."
 
 (defvar sublimity-auto-hscroll-mode nil)
 
+;; + sublimity common vars, functions
+
+(defvar sublimity--pre-command-functions nil)
+(defvar sublimity--post-command-functions nil)
+(defvar sublimity--window-change-functions nil)
+(defvar sublimity--post-vscroll-functions nil
+  "called with number of lines, when vertical scroll is occurred.")
+(defvar sublimity--post-hscroll-functions nil
+  "called with number of columns, when horizontal scroll is occurred.")
+
 ;;;###autoload
 (define-minor-mode sublimity-mode
   "smooth-scrolling and minimap, like sublime editor"
@@ -98,17 +108,10 @@ handle scrolling."
          (remove-hook 'pre-command-hook 'sublimity--pre-command)
          (remove-hook 'post-command-hook 'sublimity--post-command)
          (remove-hook 'window-configuration-change-hook 'sublimity--window-change)
+         (run-hooks 'sublimity-mode-turn-off-hook)
          (setq auto-hscroll-mode sublimity-auto-hscroll-mode))))
 
-;; + sublimity common vars, functions
-
-(defvar sublimity--pre-command-functions nil)
-(defvar sublimity--post-command-functions nil)
-(defvar sublimity--window-change-functions nil)
-(defvar sublimity--post-vscroll-functions nil
-  "called with number of lines, when vertical scroll is occurred.")
-(defvar sublimity--post-hscroll-functions nil
-  "called with number of columns, when horizontal scroll is occurred.")
+;; + internal vars, functions
 
 (defvar sublimity--prepared nil)
 (defvar sublimity--prev-lin (line-number-at-pos (window-start)))
