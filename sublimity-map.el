@@ -45,22 +45,27 @@
 
 (defcustom sublimity-map-size 17
   "width of the minimap"
+  :type 'integer
   :group 'sublimity)
 
 (defcustom sublimity-map-max-fraction 0.3
   "maximum width that the minimap can get"
+  :type 'number
   :group 'sublimity)
 
 (defcustom sublimity-map-text-scale -8
   "font rescale for the minimap"
+  :type 'integer
   :group 'sublimity)
 
 (defcustom sublimity-map-active-region 'highlight
   "face for the active region"
+  :type 'face
   :group 'sublimity)
 
 (defcustom sublimity-map-current-line 'cursor
   "face for the current line"
+  :type 'face
   :group 'sublimity)
 
 (defcustom sublimity-map-criteria
@@ -71,11 +76,13 @@
     (<= (/ sublimity-map-size (window-total-width) 1.0)
         sublimity-map-max-fraction))
   "sexps that must be evaluated to non-nil when creating minimap"
+  :type 'sexp
   :group 'sublimity)
 
 (defcustom sublimity-map-setup-hook nil
   "hook run just after the minimap is activated, with the minimap
 selected."
+  :type 'hook
   :group 'sublimity)
 
 ;; + obsolete variables

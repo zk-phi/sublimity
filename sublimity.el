@@ -60,6 +60,7 @@
 
 (defcustom sublimity-mode-hook nil
   "hook run when entering sublimity-mode"
+  :type 'hook
   :group 'sublimity)
 
 (defcustom sublimity-handle-scroll-criteria
@@ -74,6 +75,7 @@
                               scroll-bar-scroll-down))))
   "if any of the sexps evaluates to nil, sublimity does not
 handle scrolling."
+  :type 'sexp
   :group 'sublimity)
 
 ;; + minor mode

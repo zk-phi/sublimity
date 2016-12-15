@@ -32,6 +32,7 @@
 (defcustom sublimity-attractive-centering-width 110
   "When non-nil, buffer width is truncated to this value and
 display centered."
+  :type 'integer
   :group 'sublimity)
 
 (defun sublimity-attractive-hide-bars ()

@@ -41,14 +41,17 @@
 
 (defcustom sublimity-scroll-weight 4
   "scroll is maybe divided into N small scrolls"
+  :type 'integer
   :group 'sublimity)
 
 (defcustom sublimity-scroll-drift-length 6
   "scroll last N lines especially slowly"
+  :type 'integer
   :group 'sublimity)
 
 (defcustom sublimity-scroll-hide-cursor t
   "When non-nil, hide cursor while scrolling."
+  :type 'boolean
   :group 'sublimity)
 
 ;; * utils
