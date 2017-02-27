@@ -9,31 +9,28 @@ sublime editor)
 
 [[screencast.png]]
 
-** NOTE: INCOMPATIBLE CHANGES IN THE LATEST VERSION
-
-- obsolete functions are now removed
-
 ** Installation
 
-Require this script and some of "sublimity-scroll", "sublimity-map"
-and "sublimity-attractive"
+Require this script and some of =sublimity-scroll=, =sublimity-map=
+and =sublimity-attractive=.
 
 : (require 'sublimity)
 : ;; (require 'sublimity-scroll)
-: ;; (require 'sublimity-map)
+: ;; (require 'sublimity-map) ;; experimental
 : ;; (require 'sublimity-attractive)
 
-then call command "M-x sublimity-mode" (or put the following
+then call command =M-x sublimity-mode= (or put the following
 expression in your init file).
 
 : (sublimity-mode 1)
 
 ** Notes
 
-When you turn =sublimity-mode= on, "auto-hscroll-mode" is
-automatically disabled, and "sublimity-auto-hscroll-mode" will work
-instead. Therefore, to disable horizontal scrolling, set
-"sublimity-auto-hscroll-mode" but not "auto-hscroll-mode".
+When you turn =sublimity-mode= on, =auto-hscroll-mode= is
+automatically disabled, and =sublimity-auto-hscroll-mode= will work
+instead. Thus, to disable horizontal scrolling, set
+=sublimity-auto-hscroll-mode= but not =auto-hscroll-mode= while
+=sublimity-mode= is turned on.
 
 ** Customization
 *** sublimity-scroll (smooth scrolling)
@@ -63,16 +60,16 @@ With the configuration above, scroll is divided into 15 steps again,
 but the last *10* steps are all 1 line scrolls. this looks smoother
 but perhaps more annoying for some users.
 
-*** sublimity-map (minimap)
+*** sublimity-map (minimap, experimental)
 **** sublimity-map-size, fraction, text-scale
 
 : (setq sublimity-map-size 20)
 : (setq sublimity-map-fraction 0.3)
 : (setq sublimity-map-text-scale -7)
 
-"sublimity-map-fraction" defines the maximum fraction of width that
-minimap can get. "sublimity-map-text-scale" is passed to
-"text-scale-set" on minimap setup.
+=sublimity-map-fraction= defines the maximum fraction of width that
+minimap can get. =sublimity-map-text-scale= is passed to
+=text-scale-set= on minimap setup.
 
 **** sublimity-map-setup-hook
 
@@ -81,17 +78,17 @@ minimap can get. "sublimity-map-text-scale" is passed to
 :             (setq buffer-face-mode-face '(:family "Monospace"))
 :             (buffer-face-mode)))
 
-"sublimity-map-setup-hook" will run when minimap is created.
+=sublimity-map-setup-hook= will run when minimap is created.
 
 **** sublimity-map-set-delay
 
 : (sublimity-map-set-delay 5)
 
 With the setting above, minimap is displayed after 5 seconds of idle
-time. When sublimity-map-set-delay is called with nil, then minimap is
-shown with no delay. This defers from setting delay to 0, especially
-when used with sublimity-scroll, in the sense that minimap looks not
-deleted at all but gets worse performance.
+time. When =sublimity-map-set-delay= is called with =nil=, then
+minimap is shown with no delay. This defers from setting delay to 0,
+especially when used with sublimity-scroll, in the sense that minimap
+looks not deleted at all but gets worse performance.
 
 *** sublimity-attractive (distraction-free mode)
 **** sublimity-attractive-centering-width
