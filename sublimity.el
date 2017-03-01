@@ -78,6 +78,12 @@ handle scrolling."
   :type 'sexp
   :group 'sublimity)
 
+(defcustom sublimity-recenter-at-window-edge t
+  "when non-nil, sublimity will recenter the point when it moves
+past the window edge"
+  :type 'boolean
+  :group 'sublimity)
+
 ;; + minor mode
 
 (defvar sublimity-auto-hscroll-mode nil)
@@ -152,8 +158,9 @@ handle scrolling."
       (when handle-scroll
         (let (deactivate-mark)
           ;; do vscroll
-          (when (or (< (point) (window-start))
-                    (>= (point) (window-end)))
+          (when (and sublimity-recenter-at-window-edge
+                     (or (< (point) (window-start))
+                         (>= (point) (window-end))))
             (recenter))
           ;; do hscroll
           (when (and sublimity-auto-hscroll-mode
