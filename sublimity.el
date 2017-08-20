@@ -19,6 +19,7 @@
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
 ;; Version: 1.1.3
+;; Package-Requires: ((cl-lib "0.3"))
 
 ;;; Commentary:
 
@@ -50,6 +51,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defconst sublimity-version "1.1.3")
 
 ;; + customs
@@ -63,16 +66,25 @@
   :type 'hook
   :group 'sublimity)
 
-(defcustom sublimity-handle-scroll-criteria
-  '((eq sublimity--prev-buf (current-buffer))
-    (eq sublimity--prev-wnd (selected-window))
-    (or (not (boundp 'cua--rectangle)) (not cua--rectangle))
-    (or (not (boundp 'multiple-cursors-mode)) (not multiple-cursors-mode))
-    (not (eq major-mode 'shell-mode))
-    (not (memq this-command '(scroll-bar-drag
-                              scroll-bar-toolkit-scroll
-                              scroll-bar-scroll-up
-                              scroll-bar-scroll-down))))
+(defcustom sublimity-ignored-scroll-commands
+  '(scroll-bar-drag scroll-bar-toolkit-scroll scroll-bar-scroll-up scroll-bar-scroll-down)
+  "List of scroll commands which sublimity should not handle."
+  :type '(repeat symbol)
+  :group 'sublimity)
+
+(defcustom sublimity-disabled-major-modes
+  '(shell-mode)
+  "List of major-modes in which sublimity should be disabled."
+  :type '(repeat symbol)
+  :group 'sublimity)
+
+(defcustom sublimity-disabled-minor-modes
+  '(cua--rectangle multiple-cursors-mode)
+  "List of minor-modes which sublimity does not work well with."
+  :type '(repeat symbol)
+  :group 'sublimity)
+
+(defcustom sublimity-handle-scroll-criteria nil
   "if any of the sexps evaluates to nil, sublimity does not
 handle scrolling."
   :type 'sexp
@@ -148,7 +160,13 @@ handle scrolling."
   ;; avoid running post-command multiple times
   (when sublimity--prepared
     (setq sublimity--prepared nil)
-    (let ((handle-scroll (cl-every 'eval sublimity-handle-scroll-criteria)))
+    (let ((handle-scroll (and (eq sublimity--prev-buf (current-buffer))
+                              (eq sublimity--prev-wnd (selected-window))
+                              (not (memq major-mode sublimity-disabled-major-modes))
+                              (cl-every (lambda (x) (not (and (boundp x) (symbol-value x))))
+                                        sublimity-disabled-minor-modes)
+                              (not (memq this-command sublimity-ignored-scroll-commands))
+                              (cl-every 'eval sublimity-handle-scroll-criteria))))
       (when handle-scroll
         (let (deactivate-mark)
           ;; do vscroll
