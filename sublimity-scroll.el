@@ -1,6 +1,6 @@
 ;;; sublimity-scroll.el --- smooth-scrolling
 
-;; Copyright (C) 2013 zk_phi
+;; Copyright (C) 2013- zk_phi
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 ;; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 ;; Author: zk_phi
-;; URL: http://hins11.yu-yake.com/
+;; URL: https://github.com/zk-phi/sublimity
 ;; Version: 1.2.1
 ;; Package-Requires: ((cl-lib "0.1"))
 
