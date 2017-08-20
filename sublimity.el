@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
-;; Version: 1.1.3
+;; Version: 1.1.4
 ;; Package-Requires: ((cl-lib "0.3"))
 
 ;;; Commentary:
@@ -48,12 +48,13 @@
 ;;       remove add-hook in toplevel
 ;;       make sublimity-mode global
 ;; 1.1.3 scroll-bar workaround
+;; 1.1.4 divide `sublimity-handle-scroll-criteria' into three separate options
 
 ;;; Code:
 
 (require 'cl-lib)
 
-(defconst sublimity-version "1.1.3")
+(defconst sublimity-version "1.1.4")
 
 ;; + customs
 
@@ -84,11 +85,11 @@
   :type '(repeat symbol)
   :group 'sublimity)
 
-(defcustom sublimity-handle-scroll-criteria nil
-  "if any of the sexps evaluates to nil, sublimity does not
-handle scrolling."
-  :type 'sexp
-  :group 'sublimity)
+(defvar sublimity-handle-scroll-criteria nil)
+(make-obsolete-variable
+ 'sublimity-handle-scroll-criteria
+ "use sublimity-ignored-scroll-commands, sublimity-disabled-major/minor-modes instead"
+ "1.1.4")
 
 ;; + minor mode
 
