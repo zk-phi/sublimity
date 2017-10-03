@@ -67,6 +67,11 @@
   :type 'hook
   :group 'sublimity)
 
+(defcustom sublimity-disable-smooth-scroll nil
+  "Disable smooth-scrolling"
+  :type 'boolean
+  :group 'sublimity)
+
 (defcustom sublimity-ignored-scroll-commands
   '(scroll-bar-drag scroll-bar-toolkit-scroll scroll-bar-scroll-up scroll-bar-scroll-down)
   "List of scroll commands which sublimity should not handle."
@@ -161,7 +166,8 @@
   ;; avoid running post-command multiple times
   (when sublimity--prepared
     (setq sublimity--prepared nil)
-    (let ((handle-scroll (and (eq sublimity--prev-buf (current-buffer))
+    (let ((handle-scroll (and (not sublimity-disable-smooth-scroll)
+                              (eq sublimity--prev-buf (current-buffer))
                               (eq sublimity--prev-wnd (selected-window))
                               (not (memq major-mode sublimity-disabled-major-modes))
                               (cl-every (lambda (x) (not (and (boundp x) (symbol-value x))))
