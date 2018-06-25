@@ -173,7 +173,8 @@
           ;; do vscroll
           (when (or (< (point) (window-start))
                     (>= (point) (window-end)))
-            (recenter))
+            (with-selected-window sublimity--prev-wnd
+              (recenter)))
           ;; do hscroll
           (when (and sublimity-auto-hscroll-mode
                      (or truncate-lines
