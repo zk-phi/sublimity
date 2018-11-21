@@ -90,6 +90,9 @@ display centered."
   (dolist (window (window-list))
     (set-window-margins window 0 0)))
 
+(defadvice split-window (before sublimity-attractive--restore-window-size activate)
+  (set-window-margins (selected-window) 0 0))
+
 (add-hook 'sublimity-mode-turn-off-hook 'sublimity-attractive--clear-window-margins t)
 (add-hook 'sublimity--window-change-functions 'sublimity-attractive-window-change t)
 
