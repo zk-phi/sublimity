@@ -49,6 +49,11 @@
   :type 'integer
   :group 'sublimity)
 
+(defcustom sublimity-scroll-vertical-frame-delay 0
+  "Additional time to pause between each scroll step"
+  :type 'number
+  :group 'sublimity)
+
 (defcustom sublimity-scroll-hide-cursor t
   "When non-nil, hide cursor while scrolling."
   :type 'boolean
@@ -107,7 +112,8 @@
       (dolist (speed speeds)
         (sublimity-scroll--vscroll speed)
         (force-window-update (selected-window))
-        (redisplay)))))
+        (redisplay)
+        (sleep-for sublimity-scroll-vertical-frame-delay)))))
 
 (defun sublimity-scroll--hscroll-effect (cols)
   (save-excursion

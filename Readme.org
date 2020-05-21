@@ -60,6 +60,12 @@ With the configuration above, scroll is divided into 15 steps again,
 but the last *10* steps are all 1 line scrolls. this looks smoother
 but perhaps more annoying for some users.
 
+For fast computers where the smooth scrolling effect happens too
+quickly, you can configure a small delay (in seconds) that occurs
+between scroll steps:
+
+: (setq sublimity-scroll-vertical-frame-delay 0.01)
+
 *** sublimity-map (minimap, experimental)
 **** sublimity-map-size, fraction, text-scale
 
