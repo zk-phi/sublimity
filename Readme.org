@@ -32,6 +32,8 @@ instead. Thus, to disable horizontal scrolling, set
 =sublimity-auto-hscroll-mode= but not =auto-hscroll-mode= while
 =sublimity-mode= is turned on.
 
+=sublimity-scroll= currently requires an unset/zero =scroll-margin=.
+
 ** Customization
 *** sublimity-scroll (smooth scrolling)
 
