@@ -116,11 +116,13 @@
          (add-hook 'pre-command-hook 'sublimity--pre-command nil)
          (add-hook 'post-command-hook 'sublimity--post-command t)
          (add-hook 'window-configuration-change-hook 'sublimity--window-change t)
+         (add-hook 'window-setup-hook 'sublimity--window-change t)
          (run-hooks 'sublimity-mode-hook))
         (t
          (remove-hook 'pre-command-hook 'sublimity--pre-command)
          (remove-hook 'post-command-hook 'sublimity--post-command)
          (remove-hook 'window-configuration-change-hook 'sublimity--window-change)
+         (remove-hook 'window-setup-hook 'sublimity--window-change)
          (run-hooks 'sublimity-mode-turn-off-hook)
          (setq auto-hscroll-mode sublimity-auto-hscroll-mode))))
 
@@ -171,9 +173,8 @@
       (when handle-scroll
         (let (deactivate-mark)
           ;; do vscroll
-          (when (or (< (point) (window-start))
-                    (>= (point) (window-end)))
-            (with-selected-window sublimity--prev-wnd
+          (with-selected-window sublimity--prev-wnd
+            (when (not (pos-visible-in-window-p))
               (recenter)))
           ;; do hscroll
           (when (and sublimity-auto-hscroll-mode
