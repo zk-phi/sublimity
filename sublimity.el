@@ -74,7 +74,7 @@
   :group 'sublimity)
 
 (defcustom sublimity-disabled-major-modes
-  '(shell-mode)
+  '(shell-mode image-mode)
   "List of major-modes in which sublimity should be disabled."
   :type '(repeat symbol)
   :group 'sublimity)
