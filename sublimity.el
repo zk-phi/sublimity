@@ -49,12 +49,14 @@
 ;;       make sublimity-mode global
 ;; 1.1.3 scroll-bar workaround
 ;; 1.1.4 divide `sublimity-handle-scroll-criteria' into three separate options
+;; 1.1.5 remove deprecated variable
+;;       migrate to nadvice.el (now requires Emacs 24.4 or later)
 
 ;;; Code:
 
 (require 'cl-lib)
 
-(defconst sublimity-version "1.1.4")
+(defconst sublimity-version "1.1.5")
 
 ;; + customs
 
