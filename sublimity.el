@@ -19,7 +19,7 @@
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
 ;; Version: 1.1.4
-;; Package-Requires: ((cl-lib "0.3"))
+;; Package-Requires: ((cl-lib "0.3") (emacs "24.4"))
 
 ;;; Commentary:
 
