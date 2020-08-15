@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
-;; Version: 2.0.0
+;; Version: 2.0.1
 
 ;;; Change Log:
 
@@ -34,6 +34,7 @@
 ;; 1.0.7 add option sublimity-map-keep-commands
 ;; 1.0.8 add option sublimity-map-text-scale
 ;; 2.0.0 rewrite almost everything for better performance
+;; 2.0.1 remove obsolete variables
 
 ;;; Code:
 
@@ -84,16 +85,6 @@
 selected."
   :type 'hook
   :group 'sublimity)
-
-;; + obsolete variables
-
-(dolist (var '(sublimity-map-on-scroll
-               sublimity-map-on-commands
-               sublimity-map-keep-commands))
-  (eval `(defvar ,var nil))
-  (make-obsolete-variable
-   var "now minimap is updated in post-command-hook."
-   "sublimity-map 2.0.0"))
 
 ;; + internal variables
 
