@@ -85,12 +85,6 @@
   :type '(repeat symbol)
   :group 'sublimity)
 
-(defvar sublimity-handle-scroll-criteria nil)
-(make-obsolete-variable
- 'sublimity-handle-scroll-criteria
- "use sublimity-ignored-scroll-commands, sublimity-disabled-major/minor-modes instead"
- "1.1.4")
-
 ;; + minor mode
 
 (defvar sublimity-auto-hscroll-mode nil)
@@ -168,8 +162,7 @@
                               (not (memq major-mode sublimity-disabled-major-modes))
                               (cl-every (lambda (x) (not (and (boundp x) (symbol-value x))))
                                         sublimity-disabled-minor-modes)
-                              (not (memq this-command sublimity-ignored-scroll-commands))
-                              (cl-every 'eval sublimity-handle-scroll-criteria))))
+                              (not (memq this-command sublimity-ignored-scroll-commands)))))
       (when handle-scroll
         (let (deactivate-mark)
           ;; do vscroll
