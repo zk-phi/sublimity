@@ -18,7 +18,7 @@
 
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
-;; Version: 1.1.4
+;; Version: 1.1.5
 ;; Package-Requires: ((cl-lib "0.3") (emacs "25.1"))
 
 ;;; Commentary:
@@ -51,6 +51,7 @@
 ;; 1.1.4 divide `sublimity-handle-scroll-criteria' into three separate options
 ;; 1.1.5 remove deprecated variable
 ;;       migrate to nadvice.el (now requires Emacs 25.1 or later)
+;;       update window margins when frame size changes
 
 ;;; Code:
 
