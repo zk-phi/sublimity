@@ -112,12 +112,14 @@
          (add-hook 'pre-command-hook 'sublimity--pre-command nil)
          (add-hook 'post-command-hook 'sublimity--post-command t)
          (add-hook 'window-configuration-change-hook 'sublimity--window-change t)
+         (add-hook 'window-size-change-functions 'sublimity--window-change t)
          (add-hook 'window-setup-hook 'sublimity--window-change t)
          (run-hooks 'sublimity-mode-hook))
         (t
          (remove-hook 'pre-command-hook 'sublimity--pre-command)
          (remove-hook 'post-command-hook 'sublimity--post-command)
          (remove-hook 'window-configuration-change-hook 'sublimity--window-change)
+         (remove-hook 'window-size-change-functions 'sublimity--window-change)
          (remove-hook 'window-setup-hook 'sublimity--window-change)
          (run-hooks 'sublimity-mode-turn-off-hook)
          (setq auto-hscroll-mode sublimity-auto-hscroll-mode))))
@@ -191,7 +193,7 @@
           (when (not (zerop cols))
             (sublimity--run-hooks sublimity--post-hscroll-functions cols)))))))
 
-(defun sublimity--window-change ()
+(defun sublimity--window-change (&optional _)
   (sublimity--run-hooks sublimity--window-change-functions))
 
 ;; * provide
