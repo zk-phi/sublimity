@@ -19,7 +19,7 @@
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
 ;; Version: 1.1.4
-;; Package-Requires: ((cl-lib "0.3") (emacs "24.4"))
+;; Package-Requires: ((cl-lib "0.3") (emacs "25.1"))
 
 ;;; Commentary:
 
@@ -50,7 +50,7 @@
 ;; 1.1.3 scroll-bar workaround
 ;; 1.1.4 divide `sublimity-handle-scroll-criteria' into three separate options
 ;; 1.1.5 remove deprecated variable
-;;       migrate to nadvice.el (now requires Emacs 24.4 or later)
+;;       migrate to nadvice.el (now requires Emacs 25.1 or later)
 
 ;;; Code:
 
