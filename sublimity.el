@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; sublimity.el --- smooth-scrolling, minimap and distraction-free mode
 
 ;; Copyright (C) 2013- zk_phi

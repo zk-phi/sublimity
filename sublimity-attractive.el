@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; sublimity-attractive.el --- hide distractive objects
 
 ;; Copyright (C) 2013- zk_phi

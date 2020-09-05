@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t -*-
 ;;; sublimity-scroll.el --- smooth-scrolling
 
 ;; Copyright (C) 2013- zk_phi
