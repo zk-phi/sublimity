@@ -136,8 +136,8 @@
 (defun sublimity--run-hooks (hook &optional arg)
   (let* ((sublimity--window-change-functions nil))
     (if arg
-        (run-hook-with-args 'hook arg)
-      (run-hooks 'hook))))
+        (run-hook-with-args hook arg)
+      (run-hooks hook))))
 
 (defun sublimity--horizontal-recenter ()
   ;; NOT accurate for some propertized texts.
@@ -156,7 +156,7 @@
         sublimity--prev-buf (current-buffer)
         sublimity--prev-wnd (selected-window)
         sublimity--prepared t)
-  (sublimity--run-hooks sublimity--pre-command-functions))
+  (sublimity--run-hooks 'sublimity--pre-command-functions))
 
 (defun sublimity--post-command ()
   ;; avoid running post-command multiple times
@@ -184,19 +184,19 @@
                             (current-column))))
             (sublimity--horizontal-recenter))))
       ;; call post-command functions
-      (sublimity--run-hooks sublimity--post-command-functions)
+      (sublimity--run-hooks 'sublimity--post-command-functions)
       ;; animation
       (when handle-scroll
         (let ((lins (- (line-number-at-pos (window-start))
                        sublimity--prev-lin))
               (cols (- (window-hscroll) sublimity--prev-col)))
           (when (not (zerop lins))
-            (sublimity--run-hooks sublimity--post-vscroll-functions lins))
+            (sublimity--run-hooks 'sublimity--post-vscroll-functions lins))
           (when (not (zerop cols))
-            (sublimity--run-hooks sublimity--post-hscroll-functions cols)))))))
+            (sublimity--run-hooks 'sublimity--post-hscroll-functions cols)))))))
 
 (defun sublimity--window-change (&optional _)
-  (sublimity--run-hooks sublimity--window-change-functions))
+  (run-hooks 'sublimity--window-change-functions))
 
 ;; * provide
 
