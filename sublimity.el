@@ -112,6 +112,7 @@
          (add-hook 'post-command-hook 'sublimity--post-command t)
          (add-hook 'window-configuration-change-hook 'sublimity--window-change t)
          (add-hook 'window-size-change-functions 'sublimity--window-change t)
+         (add-hook 'window-buffer-change-functions 'sublimity--window-change t)
          (add-hook 'window-setup-hook 'sublimity--window-change t)
          (run-hooks 'sublimity-mode-hook))
         (t
@@ -119,6 +120,7 @@
          (remove-hook 'post-command-hook 'sublimity--post-command)
          (remove-hook 'window-configuration-change-hook 'sublimity--window-change)
          (remove-hook 'window-size-change-functions 'sublimity--window-change)
+         (remove-hook 'window-buffer-change-functions 'sublimity--window-change)
          (remove-hook 'window-setup-hook 'sublimity--window-change)
          (run-hooks 'sublimity-mode-turn-off-hook)
          (setq auto-hscroll-mode sublimity-auto-hscroll-mode))))
