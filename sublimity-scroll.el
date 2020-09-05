@@ -19,7 +19,6 @@
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
 ;; Version: 1.2.1
-;; Package-Requires: ((cl-lib "0.1"))
 
 ;;; Change Log:
 
@@ -33,7 +32,6 @@
 ;;; Code:
 
 (require 'sublimity)
-(require 'cl-lib)
 
 (defconst sublimity-scroll-version "1.2.1")
 
@@ -74,35 +72,37 @@
 
 ;; * animation
 
+(defun sublimity-scroll--fix-speed-list (lst &optional eax)
+  (if (null lst) nil
+    (let* ((rem (car lst))
+           (val (floor rem))
+           (rem (+ (- rem val) (or eax 0)))
+           (val (if (>= rem 1) (1+ val) val))
+           (rem (if (>= rem 1) (1- rem) rem)))
+      (cons val (sublimity-scroll--fix-speed-list (cdr lst) rem)))))
+
 ;; should this be cached ?
 (defun sublimity-scroll--gen-speeds (amount)
   "10 => '(2 2 2 1 1 1)"
-  (cl-labels ((fix-list (lst &optional eax)
-                        (if (null lst) nil
-                          (let* ((rem (car lst))
-                                 (val (floor rem))
-                                 (rem (+ (- rem val) (or eax 0)))
-                                 (val (if (>= rem 1) (1+ val) val))
-                                 (rem (if (>= rem 1) (1- rem) rem)))
-                            (cons val (fix-list (cdr lst) rem))))))
-    (let (a lst)
-      (cond ((integerp sublimity-scroll-weight)
-             (setq sublimity-scroll-weight (float sublimity-scroll-weight))
-             (sublimity-scroll--gen-speeds amount))
-            ((< amount 0)
-             (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
-            ((< amount sublimity-scroll-drift-length)
-             (make-list amount 1))
-            (t
-             (setq amount (- amount sublimity-scroll-drift-length))
-             ;; x = a t (t+1) / 2 <=> a = 2 x / (t^2 + t)
-             (setq a (/ (* 2 amount)
-                        (+ (expt (float sublimity-scroll-weight) 2)
-                           sublimity-scroll-weight)))
-             (dotimes (n sublimity-scroll-weight)
-               (setq lst (cons (* a (1+ n)) lst)))
-             (append (cl-remove-if 'zerop (sort (fix-list lst) '>))
-                     (make-list sublimity-scroll-drift-length 1)))))))
+  (let (a lst)
+    (cond ((integerp sublimity-scroll-weight)
+           (setq sublimity-scroll-weight (float sublimity-scroll-weight))
+           (sublimity-scroll--gen-speeds amount))
+          ((< amount 0)
+           (mapcar '- (sublimity-scroll--gen-speeds (- amount))))
+          ((< amount sublimity-scroll-drift-length)
+           (make-list amount 1))
+          (t
+           (setq amount (- amount sublimity-scroll-drift-length))
+           ;; x = a t (t+1) / 2 <=> a = 2 x / (t^2 + t)
+           (setq a (/ (* 2 amount)
+                      (+ (expt (float sublimity-scroll-weight) 2)
+                         sublimity-scroll-weight)))
+           (dotimes (n sublimity-scroll-weight)
+             (setq lst (cons (* a (1+ n)) lst)))
+           (append (delq t (mapcar (lambda (n) (or (zerop n) n))
+                                   (sort (sublimity-scroll--fix-speed-list lst) '>)))
+                   (make-list sublimity-scroll-drift-length 1))))))
 
 (defun sublimity-scroll--vscroll-effect (lins)
   (save-excursion

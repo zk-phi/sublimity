@@ -19,7 +19,7 @@
 ;; Author: zk_phi
 ;; URL: https://github.com/zk-phi/sublimity
 ;; Version: 1.1.5
-;; Package-Requires: ((cl-lib "0.3") (emacs "26.1"))
+;; Package-Requires: ((emacs "26.1"))
 
 ;;; Commentary:
 
@@ -54,8 +54,6 @@
 ;;       update window margins when frame size changes
 
 ;;; Code:
-
-(require 'cl-lib)
 
 (defconst sublimity-version "1.1.5")
 
@@ -165,8 +163,9 @@
     (let ((handle-scroll (and (eq sublimity--prev-buf (current-buffer))
                               (eq sublimity--prev-wnd (selected-window))
                               (not (memq major-mode sublimity-disabled-major-modes))
-                              (cl-every (lambda (x) (not (and (boundp x) (symbol-value x))))
-                                        sublimity-disabled-minor-modes)
+                              (not (delq nil
+                                         (mapcar (lambda (x) (and (boundp x) (symbol-value x)))
+                                                 sublimity-disabled-minor-modes)))
                               (not (memq this-command sublimity-ignored-scroll-commands)))))
       (when handle-scroll
         (let (deactivate-mark)
