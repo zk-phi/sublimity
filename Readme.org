@@ -1,3 +1,6 @@
+[[https://melpa.org/#/sublimity][file:https://melpa.org/packages/sublimity-badge.svg]]
+[[https://stable.melpa.org/#/sublimity][file:https://stable.melpa.org/packages/sublimity-badge.svg]]
+
 * sublimity.el
 
 sublime 風のスムーススクロール、ミニマップ、集中モード
