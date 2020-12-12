@@ -87,6 +87,11 @@
   :type '(repeat symbol)
   :group 'sublimity)
 
+(defcustom sublimity-vertical-recenter t
+  "When non-nil, recenter cursor vertically when it leaves the screen."
+  :type 'boolean
+  :group 'sublimity)
+
 ;; + minor mode
 
 (defvar sublimity-auto-hscroll-mode nil)
@@ -173,9 +178,10 @@
       (when handle-scroll
         (let (deactivate-mark)
           ;; do vscroll
-          (with-selected-window sublimity--prev-wnd
-            (when (not (pos-visible-in-window-p))
-              (recenter)))
+          (if sublimity-vertical-recenter
+              (with-selected-window sublimity--prev-wnd
+                (when (not (pos-visible-in-window-p))
+                  (recenter))))
           ;; do hscroll
           (when (and sublimity-auto-hscroll-mode
                      (or truncate-lines
